@@ -9,4 +9,3 @@ AWS.config.update({
 });
 
 module.exports.AWS = AWS;
-

@@ -1,5 +1,5 @@
-const { compararPass } = require('../helpers/handleBcrypt')
-const { consultarBD, registrarBD } = require('../database')
+const { compararPass } = require('../helpers/handleBcrypt.js')
+const { consultarBD, registrarBD } = require('./existBD.js')
 
 const verifyEmail = async (req, res, next) => {
 
@@ -7,8 +7,7 @@ const verifyEmail = async (req, res, next) => {
 
     const user = await consultarBD(emailF);
 
-
-    if (user !== undefined) {
+    if (user !== null) {
         return res.status(400).json({ message: "ya existe email en la bd", verify: false })
     }
 
@@ -28,19 +27,16 @@ const verifyEmailyPassword = async (req, res, next) => {
     emailF = req.body.email
     passwordF = req.body.password
 
-    const user = await consultarBD(emailF);
-    console.log("user: ", user)
-    val = JSON.stringify(user)
-    console.log(val)
+    const user = await consultarBD(emailF); 
+   
 
     //si existe:
-    if (user !== undefined) {
+    if (user !== null) {
 
         r_password = user.password
 
-
         const checkPassword = await compararPass(passwordF, r_password)
-        console.log("pass:", checkPassword)
+        
         if (checkPassword) {
             
             next()
@@ -54,8 +50,6 @@ const verifyEmailyPassword = async (req, res, next) => {
     } else {
         return res.status(400).json({ message: "No existe email", verify: false })
     }
-
-    //si email existe en bd:
 
 
 

@@ -2,12 +2,9 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
-
 miSecretKey = process.env.TOKEN_SECRET_KEY
 
-
 exports.sign = async (req, res) => {
-
     
     emailF = req.body.email
     

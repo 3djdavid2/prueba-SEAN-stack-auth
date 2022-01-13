@@ -5,7 +5,6 @@ const encriptarPass = async(passwordPlain)=>{
     return hashPassword
 }
 
-
 const compararPass = async (passwordPlain, hashPassword)=>{
     return await bcrypt.compare(passwordPlain, hashPassword)
 }
