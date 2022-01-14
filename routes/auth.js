@@ -13,7 +13,7 @@ router.post('/ingreso', verifyEmailyPassword, sign)
 
 //Creamos 2 rutas para devolver datos:
 //esta primera es publica
-router.get('/tasks', (req, res) => {
+router.get('/clientes', (req, res) => {
     res.json([
         {
             _id: 1,
@@ -38,7 +38,7 @@ router.get('/tasks', (req, res) => {
 
 
 //esta segunda es privada y se necesita verificar con una funcion que se puede reutilizar
-router.get('/private-tasks', verifyToken, (req, res) => {
+router.get('/productos', verifyToken, (req, res) => {
     res.json([
         {
             _id: 4,
