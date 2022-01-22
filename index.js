@@ -19,7 +19,7 @@ app.use(morgan('dev'));
 
 //todas las rutas empiezan con auth o product
 app.use('/api/auth', require('./routes/auth'))
-app.use('/api/product', require('./routes/product'))
+app.use('/api/Product', require('./routes/product'))
 
 
 app.listen(3000);
