@@ -11,7 +11,9 @@ const uploadPhoto = require('../middlewares/photoProd')
 //ROUTER
 router.post('/', uploadPhoto, productsCtrl.createProduct)
 
-router.get('/', productsCtrl.getProducts)
+// router.get('/', productsCtrl.getProducts)
+
+router.get('/', productsCtrl.getProductsByPage)
 
 router.get('/:productId', productsCtrl.getProductById)
 

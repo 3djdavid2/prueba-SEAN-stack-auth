@@ -19,12 +19,30 @@ exports.createProduct = async (req, res) => {
 
     res.status(201).json(productSave)
 }
-//Obtener listado de todos los productos
-exports.getProducts = async (req, res) => {
 
-    const products = await Product.findAll();
+
+
+//Obtener listado de algunos productos por pagina
+exports.getProductsByPage = async (req, res) => {
+    
+    
+    const products = await Product.findAndCountAll({
+        where:{},
+        limit:2,
+        offset:0        
+
+    });
+
     res.json(products);
 }
+
+
+//Obtener listado de todos los productos
+// exports.getProducts = async (req, res) => {
+
+//     const products = await Product.findAll();
+//     res.json(products);
+// }
 
 //Obtener 1 solo producto por su id
 exports.getProductById = async (req, res) => {
