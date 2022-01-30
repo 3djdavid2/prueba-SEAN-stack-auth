@@ -21,8 +21,8 @@ app.use(morgan('dev'));
 app.use('/api/auth', require('./routes/auth'))
 
 app.use('/api/Product', require('./routes/product'))
-app.use('/api/categoria', require('./routes/product'))
-app.use('/api/marca', require('./routes/product'))
+app.use('/api/categoria', require('./routes/categoria'))
+app.use('/api/marca', require('./routes/marca'))
 
 
 app.listen(3000);

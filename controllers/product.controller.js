@@ -21,29 +21,14 @@ exports.createProduct = async (req, res) => {
 }
 
 
-//Obtener por categoria
-
-exports.category = async (req, res) => {
-categoria="papeleria"
-    const products = await Product.findAll({
-        where:{
-            // familia:categoria
-        }
-    });
-    res.json(products);
-}
-
-
-
-
 //Obtener listado de algunos productos por pagina
 exports.getProductsByPage = async (req, res) => {
-    
-    
+
+
     const products = await Product.findAndCountAll({
-        where:{},
-        limit:10,
-        offset:0        
+        where: {},
+        limit: 10,
+        offset: 0
 
     });
 
@@ -86,7 +71,7 @@ exports.deleteproductById = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-    
+
 }
 
 

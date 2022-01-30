@@ -11,8 +11,6 @@ const actualiza = require('../middlewares/product')
 //ROUTER
 router.post('/', productsCtrl.createProduct)
 
-router.get('/', productsCtrl.category)
-
 router.get('/', productsCtrl.getProductsByPage)
 
 router.get('/:productId', productsCtrl.getProductById)
