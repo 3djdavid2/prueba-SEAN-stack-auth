@@ -1,17 +1,23 @@
 //PRODUCT TABLE
 const Product = require('../models/products')
 
-//Obtener por categoria
+//Obtener por marca
 
 exports.getMarca = async (req, res) => {
     
-    const products = await Product.findAll({
-        where: {
-           marca: 'asus'
-        }
+    const marcas = await Product.findAll({
+        order:[
+            ['marca', 'ASC']
+        ],
+        attributes: ['marca'],
+        distinct: true
     });
     
-    res.json(products);
+    const uniqueMarcas= [...new Set(marcas.map(item=>item.marca))];
+    console.log("las marcas son: ", uniqueMarcas);
+    
+    res.json(marcas);
 }
+
 
 

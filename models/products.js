@@ -4,6 +4,11 @@ const sequelize = require('../database.js')
 class Product extends Model { }
 
 Product.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement:true,
+        primaryKey:true
+    },
     nombre: {
         type: DataTypes.STRING
     },
