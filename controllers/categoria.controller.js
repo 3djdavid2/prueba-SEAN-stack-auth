@@ -5,18 +5,18 @@ const Product = require('../models/products')
 
 exports.getCategoria = async (req, res) => {
 
-    const categoria = await Product.findAll({
+    const categorias = await Product.findAll({
         order:[
-            ['familia', 'ASC']
+            ['categoria', 'ASC']
         ],
-        attributes: ['familia'],
+        attributes: ['categoria'],
         distinct: true
 
     });
 
-    const uniqueCategoria= [...new Set(categoria.map(item=>item.familia))];
-    console.log("las categorias son: ", uniqueCategoria);
+    const uniqueCategoria= [...new Set(categorias.map(item=>item.categoria))];
+    // console.log("las categorias son: ", uniqueCategoria);
     
-    res.json(categoria);
+    res.json(uniqueCategoria);
 }
 

@@ -14,9 +14,8 @@ exports.getMarca = async (req, res) => {
     });
     
     const uniqueMarcas= [...new Set(marcas.map(item=>item.marca))];
-    console.log("las marcas son: ", uniqueMarcas);
-    
-    res.json(marcas);
+       
+    res.json(uniqueMarcas);
 }
 
 

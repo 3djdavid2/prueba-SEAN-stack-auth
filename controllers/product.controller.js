@@ -3,12 +3,15 @@ const Product = require('../models/products')
 
 //Crear producto a la base de datos
 exports.createProduct = async (req, res) => {
-    const { nombre, familia, marca, descripcion, imgURL, codigo, precio, cantidad, estado } = req.body
+    const {nombre, categoria, categoriaId, marca, marcaId,descripcion, imgURL, codigo, precio, cantidad, estado } = req.body
 
     const productSave = await Product.create({
+        
         nombre,
-        familia,
+        categoria,
+        categoriaId,
         marca,
+        marcaId,
         descripcion,
         imgURL,
         codigo,
@@ -24,11 +27,14 @@ exports.createProduct = async (req, res) => {
 //Obtener listado de algunos productos por pagina
 exports.getProductsByPage = async (req, res) => {
 
+    // console.log("El req es: ",req.url);// respuesta es: /?pageIndex=1&pageSize=10
+    // console.log("Offset de pageIndex es:", req.query.pageIndex);
+    // console.log("limit de pageSize es:", req.query.pageSize);
 
     const products = await Product.findAndCountAll({
         where: {},
-        limit: 10,
-        offset: 0
+        limit: parseInt(req.query.pageSize),
+        offset: parseInt(req.query.pageIndex)
 
     });
 

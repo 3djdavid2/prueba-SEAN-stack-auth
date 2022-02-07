@@ -12,11 +12,17 @@ Product.init({
     nombre: {
         type: DataTypes.STRING
     },
-    familia: {
+    categoria: {
         type: DataTypes.STRING
+    },
+    categoriaId: {
+        type: DataTypes.NUMBER
     },
     marca: {
         type: DataTypes.STRING
+    },
+    marcaId: {
+        type: DataTypes.NUMBER
     },
     descripcion: {
         type: DataTypes.STRING
