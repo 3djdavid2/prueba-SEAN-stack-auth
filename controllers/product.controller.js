@@ -23,6 +23,15 @@ exports.createProduct = async (req, res) => {
     res.status(201).json(productSave)
 }
 
+//Devuelve la cantidad total de productos, ej: 100
+exports.getProductsCount = async (req, res) => {
+
+    const products = await Product.findAndCountAll({
+        where: {}
+    });
+
+    res.json(products.count);
+}
 
 //Obtener listado de algunos productos por pagina
 exports.getProductsByPage = async (req, res) => {

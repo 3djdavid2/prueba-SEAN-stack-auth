@@ -6,12 +6,14 @@ const productsCtrl = require('../controllers/product.controller')
 
 //MIDDLEWARE
 const actualiza = require('../middlewares/product')
-// const uploadPhoto = require('../middlewares/photoProd')
+const uploadPhoto = require('../middlewares/photoProd')
 
 //ROUTER
-router.post('/', productsCtrl.createProduct)
+router.post('/', uploadPhoto, productsCtrl.createProduct)
 
 router.get('/', productsCtrl.getProductsByPage)
+
+router.get('/count', productsCtrl.getProductsCount)
 
 router.get('/:productId', productsCtrl.getProductById)
 

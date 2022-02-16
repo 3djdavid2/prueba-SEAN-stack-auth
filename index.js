@@ -2,6 +2,7 @@ const express= require('express');
 const app= express();
 const morgan = require('morgan')
 const cors = require('cors')
+const path= require('path');
 
 //sequelize ORM
 const sequelize= require('./database.js');
@@ -17,12 +18,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
 
+app.use('/uploads', express.static(path.resolve('uploads')));
+
+
 //todas las rutas empiezan con auth o product
 app.use('/api/auth', require('./routes/auth'))
 
 app.use('/api/Product', require('./routes/product'))
 
 app.use('/api/categoria', require('./routes/categoria'))
+
 app.use('/api/marca', require('./routes/marca'))
 
 
