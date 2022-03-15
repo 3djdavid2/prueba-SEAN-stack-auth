@@ -19,7 +19,6 @@ const verifyEmail = async (req, res, next) => {
 
 }
 
-
 //MIDDLEWERE signin ACCEDER A MI CUENTA
 
 const verifyEmailyPassword = async (req, res, next) => {
