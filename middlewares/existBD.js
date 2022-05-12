@@ -6,17 +6,20 @@ const registrarBD = async (datos) => {
     const passwordE = await encriptarPass(datos.password)
     // const fecha = new Date()
 
-    await User.create({
+    const usuario = await User.create({
         email: datos.email,
         password: passwordE
     });
+
+    const rol= usuario.dataValues.role
+    const id= usuario.dataValues.id
 
     return true
 
 };
 
 
-//CONSULAR SI EXISTE EN BD SQLITE
+//CONSULTAR SI EXISTE EN BD SQLITE
 const consultarBD = async (email) => {
 
     const requestedEmail = email;

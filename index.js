@@ -17,12 +17,10 @@ const corsOptions = {
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
-
-createRoles();
+createRoles();//creacion de modelo de roles si no existen en bd: admin, moderator, user.
 app.use(morgan('dev'));
 
 app.use('/uploads', express.static(path.resolve('uploads')));
-
 
 //todas las rutas empiezan con auth o product
 app.use('/api/auth', require('./routes/auth'))

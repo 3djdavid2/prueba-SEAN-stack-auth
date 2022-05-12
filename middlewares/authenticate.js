@@ -1,6 +1,7 @@
 const { compararPass } = require('../helpers/handleBcrypt.js')
 const { consultarBD, registrarBD } = require('./existBD.js')
 
+//para registro por primera vez del usuario
 const verifyEmail = async (req, res, next) => {
 
     emailF = req.body.email
@@ -11,8 +12,7 @@ const verifyEmail = async (req, res, next) => {
         return res.status(400).json({ message: "ya existe email en la bd", verify: false })
     }
 
-    //no existe, se creará nuevo usuario de mail y password:
-
+    //si no existe, se creará nuevo usuario de mail y password:
     await registrarBD(req.body);
 
     next();

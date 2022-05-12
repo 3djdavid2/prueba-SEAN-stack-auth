@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-miSecretKey = process.env.TOKEN_SECRET_KEY
 
 const verifyToken = (req, res, next) => {
 
@@ -15,7 +14,7 @@ const verifyToken = (req, res, next) => {
             return res.status(401).send('Unauthorized Request');
         }
 
-        const payload = jwt.verify(token, miSecretKey)
+        const payload = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         req.body.email = payload._id;
 
         next();
