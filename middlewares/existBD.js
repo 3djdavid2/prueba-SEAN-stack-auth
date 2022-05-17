@@ -19,7 +19,7 @@ const registrarBD = async (datos) => {
 };
 
 
-//CONSULTAR SI EXISTE EN BD SQLITE
+//CONSULTAR SI EXISTE EL EMAIL EN BD SQLITE
 const consultarBD = async (email) => {
 
     const requestedEmail = email;

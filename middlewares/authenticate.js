@@ -1,23 +1,7 @@
 const { compararPass } = require('../helpers/handleBcrypt.js')
 const { consultarBD, registrarBD } = require('./existBD.js')
+const { getToken } = require('../config/jwt.config')
 
-//para registro por primera vez del usuario
-const verifyEmail = async (req, res, next) => {
-
-    emailF = req.body.email
-
-    const user = await consultarBD(emailF);
-
-    if (user !== null) {
-        return res.status(400).json({ message: "ya existe email en la bd", verify: false })
-    }
-
-    //si no existe, se creará nuevo usuario de mail y password:
-    await registrarBD(req.body);
-
-    next();
-
-}
 
 //MIDDLEWERE signin ACCEDER A MI CUENTA
 
@@ -26,32 +10,48 @@ const verifyEmailyPassword = async (req, res, next) => {
     emailF = req.body.email
     passwordF = req.body.password
 
-    const user = await consultarBD(emailF); 
-   
+    const user = await consultarBD(emailF);
 
-    //si existe:
+
+    //SI EXISTE EMAIL:
     if (user !== null) {
 
-        r_password = user.password
+        const verificacion = user.statusEmail;
+        // console.log("el estado de verificacion es: ", verificacion)//***unconfirmed
 
+        r_password = user.password
         const checkPassword = await compararPass(passwordF, r_password)
-        
+
         if (checkPassword) {
-            
-            next()
+
+
+
+            //ESTADO DE VERIFICACION POR EMAIL ANTERIOR:
+
+            if (verificacion == 'unconfirmed') {//NO:Enviar al correo link
+
+            } else {//SI: esta ok: enviar token al localStorage
+
+                //GENERO TOKEN
+                 token = getToken(emailF);
+            }
 
         } else {
-
             //password incorrecta
             return res.status(400).json({ message: "No coincide password", verify: false })
         }
 
+        //NO EXISTE EMAIL
     } else {
-        return res.status(400).json({ message: "No existe email", verify: false })
+        await registrarBD(req.body);
+        res.status(400).json({ message: "No existe email", verify: false })
+        // return 
     }
+
+    next();
 
 
 
 }
 
-module.exports = { verifyEmail, verifyEmailyPassword }
+module.exports = { verifyEmailyPassword }

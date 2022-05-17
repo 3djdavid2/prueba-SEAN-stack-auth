@@ -18,6 +18,10 @@ User.init({
     role:{
         type: DataTypes.STRING,
         defaultValue: 'client'
+    },
+    statusEmail:{
+        type: DataTypes.STRING,
+        defaultValue:'unconfirmed'
     }
 }, {
     sequelize,

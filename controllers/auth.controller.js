@@ -8,9 +8,9 @@ exports.sign = async (req, res) => {
     
     emailF = req.body.email
     
-    const token = jwt.sign({ _id: emailF }, miSecretKey);
+     //const token = jwt.sign({ _id: emailF }, miSecretKey);
 
-    return res.json({ token });
+    return res.json({ tok: 'token' });
 
 }
 

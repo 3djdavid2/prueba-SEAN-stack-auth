@@ -66,7 +66,7 @@ exports.getProductById = async (req, res) => {
 
 
 //Actualizar 1 solo producto (ej: su precio, estado-activo o inactivo- cantidad, etc)
-exports.updateProductById = async (req, res) => {
+exports.updateProductById = async (req, res) => { //todo
 
     res.send('updated');
 

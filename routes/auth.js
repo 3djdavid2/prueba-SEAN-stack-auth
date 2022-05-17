@@ -3,9 +3,9 @@ const router = Router();
 
 const { sign } = require('../controllers/auth.controller')
 const verifyToken = require('../middlewares/verifyToken')
-const { verifyEmail, verifyEmailyPassword } = require('../middlewares/authenticate')
+const { verifyEmailyPassword } = require('../middlewares/authenticate')
 
-router.post('/registro', verifyEmail, sign)
+router.post('/registro', verifyEmailyPassword, sign)
 router.post('/ingreso', verifyEmailyPassword, sign)
 
 //esta  es privada y se necesita verificar con una funcion que se puede reutilizar
