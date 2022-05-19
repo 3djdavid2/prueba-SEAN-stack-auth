@@ -1,15 +1,17 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const miSecretKey = process.env.TOKEN_SECRET_KEY
 
 const getToken = (payload) => {
-    return jwt.sign({
-        data: payload
-    }, 'SECRET', { expiresIn: '1h' });
+
+    return token = jwt.sign({ _id: payload }, miSecretKey, { expiresIn: '1h' });
+
 }
 
 const getTokenData = (token) => {
     let data = null;
-    jwt.verify(token, 'SECRET', (err, decoded) => {
-        if(err) {
+    jwt.verify(token, miSecretKey, (err, decoded) => {
+        if (err) {
             console.log('Error al obtener data del token');
         } else {
             data = decoded;

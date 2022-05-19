@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const router = Router();
 
-const { sign } = require('../controllers/auth.controller')
 const verifyToken = require('../middlewares/verifyToken')
+
 const { verifyEmailyPassword } = require('../middlewares/authenticate')
+const { sign } = require('../controllers/auth.controller')
 
 router.post('/registro', verifyEmailyPassword, sign)
 router.post('/ingreso', verifyEmailyPassword, sign)
