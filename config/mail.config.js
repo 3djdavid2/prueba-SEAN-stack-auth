@@ -13,16 +13,16 @@ let transporter = nodemailer.createTransport({
     },
     secure: true, // true for 465, false for other ports
     auth: {
-      user: mail.user, // generated ethereal user
-      pass: mail.pass, // generated ethereal password
+        user: mail.user, // generated ethereal user
+        pass: mail.pass, // generated ethereal password
     },
-  });
+});
 
-  const sendEmail = async (email, subject, html) => {
+const sendEmail = async (email, subject, html) => {
     try {
-        
+
         await transporter.sendMail({
-            from: `PatronatoTelas <${ mail.user }>`, // sender address
+            from: `PatronatoTelas <${mail.user}>`, // sender address
             to: email, // list of receivers
             subject, // Subject line
             text: "https://www.patronatotelas.cl/", // plain text body
@@ -32,27 +32,22 @@ let transporter = nodemailer.createTransport({
     } catch (error) {
         console.log('Algo no va bien con el email', error);
     }
-  }
+}
 
-  const getTemplate = (name, token) => {
-      return `
-        <head>
-            <link rel="stylesheet" href="./style.css">
-        </head>
-        
-        <div id="email___content">
-            <img src="https://i.imgur.com/eboNR82.png" alt="">
-            <h2>Hola ${ name }</h2>
+const getTemplate = (email, token) => {
+    return `
+        <div>           
+            <h2>Hola ${email}</h2>
             <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
-            <a
-                href="http://localhost:5000/api/user/confirm/${ token }"
-                target="_blank"
-            >Confirmar Cuenta</a>
+                <a href="http://localhost:5000/api/auth/confirm/${token}"
+                     target="_blank">
+                        Confirmar Cuenta
+                 </a>
         </div>
       `;
-  }
+}
 
-  module.exports = {
+module.exports = {
     sendEmail,
     getTemplate
-  }
+}

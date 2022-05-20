@@ -1,6 +1,7 @@
 const { compararPass } = require('../helpers/handleBcrypt.js')
 const { consultarBD, registrarBD } = require('./existBD.js')
 const { getToken } = require('../config/jwt.config')
+const { getTemplate, sendEmail } = require('../config/mail.config');
 
 //MIDDLEWERE signin ACCEDER A MI CUENTA
 
@@ -15,7 +16,7 @@ const verifyEmailyPassword = async (req, res, next) => {
     if (user !== null) {
 
         if (clicksignin === 'true') {
-            console.log("desde signin=true")
+
             //verifica pass:
             r_password = user.password
             const checkPassword = await compararPass(passwordF, r_password)
@@ -30,11 +31,14 @@ const verifyEmailyPassword = async (req, res, next) => {
 
                 if (verificacion === 'unconfirmed') {//Enviar al CORREO el link de url y token:
 
+                    //Envia token y link al correo del cliente: 
+                    const template = getTemplate(emailF, token);
+                    await sendEmail(emailF, 'Este es un email de prueba-mail existe', template);
+
+                    //AVISO EN SIGNIN QUE SE LE HA ENVIADO UN CORREO DE CONFIRMACION
                     return res.json({ token: 'tomailconfirm' })
 
-                } else {
-                    //token al store ok next()
-                }
+                } 
 
 
             } else {
@@ -42,16 +46,17 @@ const verifyEmailyPassword = async (req, res, next) => {
                 return res.status(400).json({ message: "No coincide password", verify: false })
             }
 
-
         } else {
             //reenvia a signin ya que el mail existe:
             return res.json({ token: 'tosignin' })
         }
 
 
-        //NO EXISTE EMAIL
+
+
+    //NO EXISTE EMAIL
     } else {
-        if (clicksignin == 'true') {
+        if (clicksignin === 'true') {
             //reenvia a sign up:
             return res.json({ token: 'tosignup' })
         }
@@ -62,10 +67,12 @@ const verifyEmailyPassword = async (req, res, next) => {
         token = getToken(emailF)
 
         //Envia token y link al correo del cliente:
+        const template = getTemplate(emailF, token);
 
+        // Enviar el email
+        await sendEmail(emailF, 'Este es un email de prueba', template);
+        //Aviso al cliente que se le ha enviado un correo con link para confirmacion
         return res.json({ token: 'tomailconfirm' })
-
-
 
 
     }

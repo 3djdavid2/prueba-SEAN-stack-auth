@@ -2,12 +2,14 @@ const { Router } = require('express');
 const router = Router();
 
 const verifyToken = require('../middlewares/verifyToken')
-
+const UserController = require('../controllers/user.controller');
 const { verifyEmailyPassword } = require('../middlewares/authenticate')
 const { sign } = require('../controllers/auth.controller')
 
 router.post('/registro', verifyEmailyPassword, sign)
 router.post('/ingreso', verifyEmailyPassword, sign)
+
+router.get('/confirm/:token', UserController.confirm);
 
 //esta  es privada y se necesita verificar con una funcion que se puede reutilizar
 router.get('/productos', verifyToken, (req, res) => {

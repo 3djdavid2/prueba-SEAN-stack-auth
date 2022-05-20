@@ -23,6 +23,7 @@ createRoles();//creacion de modelo de roles si no existen en bd: admin, moderato
 app.use(morgan('dev'));
 
 app.use('/uploads', express.static(path.resolve('uploads')));
+app.use(express.static('./public'));
 
 //todas las rutas empiezan con auth o product
 app.use('/api/auth', require('./routes/auth'))

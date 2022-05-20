@@ -9,12 +9,18 @@ const getToken = (payload) => {
 }
 
 const getTokenData = (token) => {
+
+    
     let data = null;
+
     jwt.verify(token, miSecretKey, (err, decoded) => {
+
         if (err) {
             console.log('Error al obtener data del token');
         } else {
-            data = decoded;
+
+            data = decoded._id;
+
         }
     });
 
