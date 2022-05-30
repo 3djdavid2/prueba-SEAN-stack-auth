@@ -1,42 +1,42 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
 
-class Product extends Model { }
+class Ordenes extends Model { }
 
-Product.init({
+Ordenes.init({
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement:true,
-        primaryKey:true
+        autoIncrement: true,
+        primaryKey: true
     },
-    nombre: {
+    ordenPedido: {
         type: DataTypes.STRING
     },
-    categoria: {
+    fechaPedido: {
         type: DataTypes.STRING
     },
-    categoriaId: {
+    horaPedido: {
         type: DataTypes.NUMBER
     },
-    marca: {
+    cliente: {
         type: DataTypes.STRING
     },
-    marcaId: {
+    monto: {
         type: DataTypes.NUMBER
     },
-    descripcion: {
+    items: {
         type: DataTypes.STRING
     },
-    imgURL: {
+    cantProd: {
         type: DataTypes.STRING
     },
-    codigo: {
+    codigoProd: {
         type: DataTypes.NUMBER
     },
-    precio: {
+    impreso: {
         type: DataTypes.NUMBER
     },
-    cantidad: {
+    reenvioFecha: {
         type: DataTypes.NUMBER
     },
     estado: {
@@ -44,9 +44,7 @@ Product.init({
     },
 }, {
     sequelize,
-  
-    modelName: 'product'
+    modelName: 'orden'
 })
 
-module.exports = Product;
-
+module.exports = Ordenes;

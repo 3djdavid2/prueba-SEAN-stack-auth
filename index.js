@@ -7,7 +7,7 @@ require('dotenv').config();
 
 //sequelize ORM
 const sequelize= require('./database.js');
-const { createRoles } = require('./libs/initialSetup.js');
+const { createRoles, createEstadoPedido} = require('./libs/initialSetup.js');
 sequelize.sync().then(() => console.log('db is ready'));
 
 //para que re.body no entregue Undefined como respuesta del post solicitado
@@ -19,7 +19,10 @@ const corsOptions = {
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
+
 createRoles();//creacion de modelo de roles si no existen en bd: admin, moderator, user.
+createEstadoPedido();//creacion de modelo estados de los pedidos, enviado, cancelado, etc.
+
 app.use(morgan('dev'));
 
 app.use('/uploads', express.static(path.resolve('uploads')));

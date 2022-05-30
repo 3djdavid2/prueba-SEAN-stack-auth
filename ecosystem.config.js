@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: "app-node1",
+            name: "api-patronato",
             script: "./index.js",
             watch: false,
             max_memory_restart: '1000M',

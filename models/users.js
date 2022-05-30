@@ -22,9 +22,29 @@ User.init({
     statusEmail:{
         type: DataTypes.STRING,
         defaultValue:'unconfirmed'
-    }
+    },
+    nombre:{
+        type: DataTypes.STRING
+    },
+    rut:{
+        type: DataTypes.STRING
+    },
+    telefono:{
+        type: DataTypes.STRING
+    },
+    direccion:{
+        type: DataTypes.STRING
+    },
+    telefonoRecibe:{
+        type: DataTypes.STRING
+    },
+    direccionDespacho:{
+        type: DataTypes.STRING
+    },
+
 }, {
     sequelize,
+  
     modelName: 'user'
 })
 

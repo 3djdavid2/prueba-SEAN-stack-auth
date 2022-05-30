@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const mail = {
-    user: 'contacto@davidvivancoweb.com',
-    pass: 'New@2204'
+    user: 'contacto@patronatotelas.cl',
+    pass: process.env.PASS_MAIL
 }
 
 let transporter = nodemailer.createTransport({
@@ -39,7 +40,7 @@ const getTemplate = (email, token) => {
         <div>           
             <h2>Hola ${email}</h2>
             <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
-                <a href="http://localhost:5000/api/auth/confirm/${token}"
+                <a href="http://localhost:3000/api/auth/confirm/${token}"
                      target="_blank">
                         Confirmar Cuenta
                  </a>

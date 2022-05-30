@@ -1,37 +1,22 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
 
-class Product extends Model { }
+class Carrito extends Model { }
 
-Product.init({
+Carrito.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true
     },
-    nombre: {
+    cliente: {
         type: DataTypes.STRING
     },
-    categoria: {
+    productoId: {
         type: DataTypes.STRING
     },
-    categoriaId: {
-        type: DataTypes.NUMBER
-    },
-    marca: {
+    producto: {
         type: DataTypes.STRING
-    },
-    marcaId: {
-        type: DataTypes.NUMBER
-    },
-    descripcion: {
-        type: DataTypes.STRING
-    },
-    imgURL: {
-        type: DataTypes.STRING
-    },
-    codigo: {
-        type: DataTypes.NUMBER
     },
     precio: {
         type: DataTypes.NUMBER
@@ -39,14 +24,19 @@ Product.init({
     cantidad: {
         type: DataTypes.NUMBER
     },
-    estado: {
+    total: {
+        type: DataTypes.NUMBER
+    },
+    sesion: {
         type: DataTypes.BOOLEAN
     },
+    ordenPedido:{
+        type: DataTypes.NUMBER
+    }
 }, {
     sequelize,
-  
-    modelName: 'product'
+    
+    modelName: 'carrito'
 })
 
-module.exports = Product;
-
+module.exports = Carrito;

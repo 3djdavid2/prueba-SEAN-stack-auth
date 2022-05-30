@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
 
-class Product extends Model { }
+class Tiendas extends Model { }
 
-Product.init({
+Tiendas.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement:true,
@@ -12,41 +12,28 @@ Product.init({
     nombre: {
         type: DataTypes.STRING
     },
-    categoria: {
+    horario: {
         type: DataTypes.STRING
     },
-    categoriaId: {
-        type: DataTypes.NUMBER
-    },
-    marca: {
+    dias: {
         type: DataTypes.STRING
     },
-    marcaId: {
-        type: DataTypes.NUMBER
-    },
-    descripcion: {
+    direccion: {
         type: DataTypes.STRING
     },
-    imgURL: {
+    telefono: {
         type: DataTypes.STRING
     },
-    codigo: {
-        type: DataTypes.NUMBER
-    },
-    precio: {
-        type: DataTypes.NUMBER
-    },
-    cantidad: {
-        type: DataTypes.NUMBER
+    encargado: {
+        type: DataTypes.STRING
     },
     estado: {
         type: DataTypes.BOOLEAN
-    },
+    }
 }, {
     sequelize,
-  
-    modelName: 'product'
+    
+    modelName: 'tienda'
 })
 
-module.exports = Product;
-
+module.exports = Tiendas;
