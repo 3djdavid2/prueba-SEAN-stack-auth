@@ -30,12 +30,10 @@ app.use(express.static('./public'));
 
 //todas las rutas empiezan con auth o product
 app.use('/api/auth', require('./routes/auth'))
-
-app.use('/api/product', require('./routes/product'))
-
 app.use('/api/categoria', require('./routes/categoria'))
-
 app.use('/api/marca', require('./routes/marca'))
+app.use('/api/product', require('./routes/product'))
+app.use('/api/perfil', require('./routes/perfil'))
 
 
 app.listen(port);

@@ -18,6 +18,9 @@ Pagos.init({
     monto: {
         type: DataTypes.NUMBER
     },
+    dte: {
+        type: DataTypes.STRING
+    },
     codAuth: {
         type: DataTypes.STRING
     },
