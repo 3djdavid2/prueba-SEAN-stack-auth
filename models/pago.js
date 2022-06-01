@@ -10,7 +10,7 @@ Pagos.init({
         primaryKey: true
     },
     ordenPedido: {
-        type: DataTypes.NUMBER
+        type: DataTypes.STRING
     },
     nombreComercio: {
         type: DataTypes.STRING

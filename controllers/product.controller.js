@@ -90,5 +90,3 @@ exports.deleteproductById = async (req, res) => {
     }
 
 }
-
-

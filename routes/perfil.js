@@ -9,6 +9,4 @@ const perfil = require('../controllers/perfil.controller')
 router.get('/:email', perfil.getMisDatos)
 router.put('/:email', perfil.updateMisDatos)
 
-
-
 module.exports = router;

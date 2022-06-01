@@ -34,6 +34,7 @@ app.use('/api/categoria', require('./routes/categoria'))
 app.use('/api/marca', require('./routes/marca'))
 app.use('/api/product', require('./routes/product'))
 app.use('/api/perfil', require('./routes/perfil'))
+app.use('/api/carrito', require('./routes/carrito'))
 
 
 app.listen(port);

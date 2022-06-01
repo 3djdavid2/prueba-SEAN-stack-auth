@@ -13,7 +13,7 @@ Carrito.init({
         type: DataTypes.STRING
     },
     productoId: {
-        type: DataTypes.STRING
+        type: DataTypes.NUMBER
     },
     producto: {
         type: DataTypes.STRING
@@ -28,10 +28,10 @@ Carrito.init({
         type: DataTypes.NUMBER
     },
     sesion: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.STRING
     },
     ordenPedido:{
-        type: DataTypes.NUMBER
+        type: DataTypes.STRING
     }
 }, {
     sequelize,
