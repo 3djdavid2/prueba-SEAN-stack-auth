@@ -1,6 +1,22 @@
 const {encriptarPass} = require('../helpers/handleBcrypt')
 const User = require('../models/users')
 
+
+const saveTokenBD = async (email, token) => {
+
+    const user = await User.findOne({ where: { email: email } });
+
+    user.token = token
+    await user.save()
+
+    return
+    
+
+};
+
+
+
+
 const registrarBD = async (datos) => {
 
     const passwordE = await encriptarPass(datos.password)
@@ -36,5 +52,7 @@ const consultarBD = async (email) => {
 
 module.exports = {
     consultarBD,
-    registrarBD
+    registrarBD,
+    saveTokenBD,
+
 }

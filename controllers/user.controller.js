@@ -2,6 +2,13 @@ const { getTokenData } = require('../config/jwt.config');
 const { consultarBD } = require('../middlewares/existBD');
 const User = require('../models/users');
 
+
+const compruebaToken=async(req,res)=>{
+    const token = req.headers.token
+    console.log(token)
+    return token
+}
+
 const confirm = async (req, res) => {
 
     try {
@@ -16,6 +23,8 @@ const confirm = async (req, res) => {
                 msg: 'Error al obtener data1'
             });
         }
+
+        console.log("el token en user controller de email es: ", email)
 
         // Verificar existencia del usuario
         const user = await consultarBD(email);
@@ -52,5 +61,6 @@ const confirm = async (req, res) => {
 
 
 module.exports = {
+    compruebaToken,
     confirm
 }

@@ -10,6 +10,7 @@ router.post('/registro', verifyEmailyPassword, sign)
 router.post('/ingreso', verifyEmailyPassword, sign)
 
 router.get('/confirm/:token', UserController.confirm);
+router.get('/compruebaToken', UserController.compruebaToken);
 
 //esta  es privada y se necesita verificar con una funcion que se puede reutilizar
 router.get('/productos', verifyToken, (req, res) => {

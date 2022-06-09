@@ -9,6 +9,13 @@ User.init({
         autoIncrement:true,
         primaryKey:true
     },
+    token:{
+
+        type: DataTypes.STRING
+    },
+    tokenExpirado:{
+        type: DataTypes.BOOLEAN
+    },
     email: {
         type: DataTypes.STRING
     },

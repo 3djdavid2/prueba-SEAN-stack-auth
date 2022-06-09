@@ -1,5 +1,5 @@
 const { compararPass } = require('../helpers/handleBcrypt.js')
-const { consultarBD, registrarBD } = require('./existBD.js')
+const { consultarBD, registrarBD, saveTokenBD } = require('./existBD.js')
 const { getToken } = require('../config/jwt.config')
 const { getTemplate, sendEmail } = require('../config/mail.config');
 
@@ -25,6 +25,10 @@ const verifyEmailyPassword = async (req, res, next) => {
 
                 //GENERO TOKEN
                 const token = getToken(emailF);
+                req.body.token = token
+                
+                //Guardo token en bd 
+                await saveTokenBD(emailF,token);
 
                 //VERIFICO si existe verificado de email anterior en BD:
                 const verificacion = user.statusEmail;
@@ -38,7 +42,7 @@ const verifyEmailyPassword = async (req, res, next) => {
                     //AVISO EN SIGNIN QUE SE LE HA ENVIADO UN CORREO DE CONFIRMACION
                     return res.json({ token: 'tomailconfirm' })
 
-                } 
+                }
 
 
             } else {
@@ -54,7 +58,7 @@ const verifyEmailyPassword = async (req, res, next) => {
 
 
 
-    //NO EXISTE EMAIL
+        //NO EXISTE EMAIL
     } else {
         if (clicksignin === 'true') {
             //reenvia a sign up:
@@ -65,6 +69,8 @@ const verifyEmailyPassword = async (req, res, next) => {
         await registrarBD(req.body);
         //genera TOKEN
         token = getToken(emailF)
+        //Guardo token en bd 
+        await saveTokenBD(emailF,token);
 
         //Envia token y link al correo del cliente:
         const template = getTemplate(emailF, token);

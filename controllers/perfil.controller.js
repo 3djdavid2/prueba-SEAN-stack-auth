@@ -1,9 +1,10 @@
 
-const { options } = require('../models/users');
 const User = require('../models/users')
 
 exports.getMisDatos = async (req, res) => {
+
     const email = req.params.email
+   
 
     const user = await User.findOne({
         where: {
@@ -13,6 +14,7 @@ exports.getMisDatos = async (req, res) => {
 
     res.status(200).json(user)
 }
+
 
 
 //Actualizar 
@@ -36,6 +38,3 @@ exports.updateMisDatos = async (req, res) => {
     // res.send('updated');//sintaxerror: Unexpected token u in JSON at position 0 at JSON.parse
 
 }
-
-
-

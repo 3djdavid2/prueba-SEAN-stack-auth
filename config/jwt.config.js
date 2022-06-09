@@ -4,7 +4,7 @@ const miSecretKey = process.env.TOKEN_SECRET_KEY
 
 const getToken = (payload) => {
 
-    return token = jwt.sign({ _id: payload }, miSecretKey, { expiresIn: '1h' });
+    return token = jwt.sign({ _id: payload }, miSecretKey, { expiresIn: '20s' });
 
 }
 
@@ -16,7 +16,7 @@ const getTokenData = (token) => {
     jwt.verify(token, miSecretKey, (err, decoded) => {
 
         if (err) {
-            console.log('Error al obtener data del token');
+            console.log('Error al obtener data del token: ', err);
         } else {
 
             data = decoded._id;
