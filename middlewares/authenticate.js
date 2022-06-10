@@ -1,6 +1,6 @@
 const { compararPass } = require('../helpers/handleBcrypt.js')
 const { consultarBD, registrarBD, saveTokenBD } = require('./existBD.js')
-const { getToken } = require('../config/jwt.config')
+const { createToken } = require('../config/jwt.config')
 const { getTemplate, sendEmail } = require('../config/mail.config');
 
 //MIDDLEWERE signin ACCEDER A MI CUENTA
@@ -12,7 +12,7 @@ const verifyEmailyPassword = async (req, res, next) => {
     clicksignin = req.headers.clicksignin //true
     const user = await consultarBD(emailF);
 
-    //SI EXISTE EMAIL:
+    //SI EXISTE usuario:
     if (user !== null) {
 
         if (clicksignin === 'true') {
@@ -24,7 +24,7 @@ const verifyEmailyPassword = async (req, res, next) => {
             if (checkPassword) {
 
                 //GENERO TOKEN
-                const token = getToken(emailF);
+                const token = createToken(emailF, user.role);
                 req.body.token = token
                 
                 //Guardo token en bd 
@@ -68,7 +68,7 @@ const verifyEmailyPassword = async (req, res, next) => {
         //guarda en bd cliente nuevo
         await registrarBD(req.body);
         //genera TOKEN
-        token = getToken(emailF)
+        token = createToken(emailF)
         //Guardo token en bd 
         await saveTokenBD(emailF,token);
 
@@ -89,6 +89,4 @@ const verifyEmailyPassword = async (req, res, next) => {
 
 }
 
-module.exports = { verifyEmailyPassword }
-
-// res.status(400).json({ message: "No existe email", verify: false })
+module.exports = { verifyEmailyPassword };
