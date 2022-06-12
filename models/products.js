@@ -9,6 +9,9 @@ Product.init({
         autoIncrement:true,
         primaryKey:true
     },
+    estado: {
+        type: DataTypes.STRING
+    },
     nombre: {
         type: DataTypes.STRING
     },
@@ -39,8 +42,12 @@ Product.init({
     cantidad: {
         type: DataTypes.NUMBER
     },
-    estado: {
-        type: DataTypes.BOOLEAN
+    
+    unidadMedida: {
+        type: DataTypes.STRING
+    },
+    unidMinVenta: {
+        type: DataTypes.DECIMAL(10,2)
     },
 }, {
     sequelize,

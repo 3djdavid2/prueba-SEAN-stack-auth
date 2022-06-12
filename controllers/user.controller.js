@@ -5,7 +5,7 @@ const User = require('../models/users');
 
 const compruebaToken=async(req,res)=>{
     const token = req.headers.token
-    console.log(token)
+    
     return token
 }
 
@@ -16,11 +16,11 @@ const confirm = async (req, res) => {
         const { token } = req.params;
 
         // Verificar la data
-        const email = await getTokenData(token);
+        const email = getTokenData(token);
         if (email === null) {
             return res.json({
                 success: false,
-                msg: 'Error al obtener data1'
+                msg: 'Error al obtener data del token'
             });
         }
 

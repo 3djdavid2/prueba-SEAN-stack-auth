@@ -4,7 +4,7 @@ const miSecretKey = process.env.TOKEN_SECRET_KEY
 
 const createToken = (email, role) => {
 
-    return token = jwt.sign({ _id: email, role:role}, miSecretKey, { expiresIn: '20s' });
+    return token = jwt.sign({ _id: email, role:role}, miSecretKey, { expiresIn: '10m' });
 
 }
 
@@ -19,7 +19,7 @@ const getTokenData = (token) => {
             console.log('Error al obtener data del token: ', err);
         } else {
 
-            data = payload;
+            data = payload._id;
 
         }
     });
