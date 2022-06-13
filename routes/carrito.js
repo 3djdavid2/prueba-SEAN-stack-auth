@@ -4,12 +4,15 @@ const router = Router();
 //CONTROLLER
 const carrito = require('../controllers/carrito.controller')
 
+//MIddleware
+const verifyToken = require('../middlewares/verifyToken')
+
 //ROUTER
 
-router.post('/', carrito.createCarrito)
-router.get('/', carrito.getCarritos)
-router.get('/:order', carrito.getCarritoByOrder)
-router.put('/:order', carrito.updateCarrito)
-router.delete('/:order', carrito.deleteCarrito)
+router.post('/', verifyToken, carrito.createCarrito)
+router.get('/', verifyToken, carrito.getCarritos)
+router.get('/:order', verifyToken, carrito.getCarritoByOrder)
+router.put('/:order', verifyToken, carrito.updateCarrito)
+router.delete('/:order', verifyToken, carrito.deleteCarrito)
 
 module.exports = router;

@@ -4,9 +4,11 @@ const router = Router();
 //CONTROLLER
 const marcaCtrl = require('../controllers/marca.controller')
 
+//MIddleware
+
 //ROUTER
 
-router.get('/', marcaCtrl.getMarca)
+router.get('/',  marcaCtrl.getMarca)
 
 
 

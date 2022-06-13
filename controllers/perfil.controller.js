@@ -3,8 +3,7 @@ const User = require('../models/users')
 
 exports.getMisDatos = async (req, res) => {
 
-    const email = req.params.email
-   
+    const email = req.body.email   
 
     const user = await User.findOne({
         where: {
@@ -20,7 +19,7 @@ exports.getMisDatos = async (req, res) => {
 //Actualizar 
 exports.updateMisDatos = async (req, res) => {
 
-    const email = req.params.email
+    const email = req.body.email
     const { nombre, rut, direccion, telefono } = req.body
 
     const user = await User.update(

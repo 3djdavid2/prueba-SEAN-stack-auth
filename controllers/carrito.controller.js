@@ -1,19 +1,21 @@
-//PRODUCT TABLE
+
 const Carrito = require('../models/carrito')
 
 //Crear producto a la base de datos
 exports.createCarrito = async (req, res) => {
+//aqui llega en req el productId y la cantidad a comprar
+//todo ver token valido y cliente en el
+
 
     const cliente= req.params.email
-    console.log("createCarrito en back", cliente)
+ 
     const {
          productoId,
          producto, 
          precio, 
          cantidad, 
          total, 
-         sesion, 
-         ordenPedido
+      
          } = req.body
 
     carritoSave = await Carrito.create({
@@ -24,8 +26,8 @@ exports.createCarrito = async (req, res) => {
         precio,
         cantidad,
         total,
-        sesion,
-        ordenPedido,
+        sesion: '',
+        ordenPedido: '',
 
     });
 

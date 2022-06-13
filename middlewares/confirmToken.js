@@ -1,13 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-const verifyToken = async (req, res, next) => {
-   
-    if (!req.headers.authorization) {
-        return res.status(401).send('Unauthorized Request');
-    }
+const confirmToken = async (req, res, next) => {
 
-    const token = req.headers.authorization.split(' ')[1]
-
+    token= req.params.token
+    
     try {
 
         if (token === 'null') {
@@ -23,11 +19,11 @@ const verifyToken = async (req, res, next) => {
 
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
-            return res.throw(401, 'Token expirado')
+            //todo redirigir a pagina error
+            return  res.status(400).json({ error: 'token no es válido ex' })
         }
         res.status(400).json({ error: 'token no es válido' })
     }
 }
 
-module.exports = verifyToken
-
+module.exports = { confirmToken };
