@@ -33,7 +33,8 @@ exports.createCarrito = async (req, res) => {
 
 
 
-//Obtener listado de todos los carritos
+//Obtener listado de todos los productos en carrito pendiente de orden o sesion
+
 exports.getCarritos = async (req, res) => {
 
     const carrito = await Carrito.findAndCountAll({
