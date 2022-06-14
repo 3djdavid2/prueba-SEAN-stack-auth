@@ -23,7 +23,7 @@ const verifyToken = async (req, res, next) => {
 
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
-            return res.throw(401, 'Token expirado')
+            return  res.status(400).json({ error: 'token no es válido ex' })
         }
         res.status(400).json({ error: 'token no es válido' })
     }
