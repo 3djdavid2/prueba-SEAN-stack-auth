@@ -11,8 +11,9 @@ const verifyToken = require('../middlewares/verifyToken')
 
 router.post('/', verifyToken, carrito.createCarrito)
 router.get('/', verifyToken, carrito.getCarritos)
+router.get('/pendiente', verifyToken, carrito.getCarritoPendiente)
 router.get('/:order', verifyToken, carrito.getCarritoByOrder)
-router.put('/:order', verifyToken, carrito.updateCarrito)
-router.delete('/:order', verifyToken, carrito.deleteCarrito)
+router.put('/', verifyToken, carrito.updateCarrito)
+router.delete('/:id', verifyToken, carrito.deleteCarrito)
 
 module.exports = router;

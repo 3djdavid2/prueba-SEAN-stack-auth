@@ -37,14 +37,28 @@ exports.createCarrito = async (req, res) => {
 
 exports.getCarritos = async (req, res) => {
 
+    email = req.body.email
     const carrito = await Carrito.findAndCountAll({
-        where: {},
+      
+        where: { cliente: email, ordenPedido: ''},
     });
 
     res.status(200).json(carrito)
 
 }
 
+// getCarritoPendiente
+
+exports.getCarritoPendiente = async (req, res) => {
+
+    email = req.body.email
+    const carrito = await Carrito.findAndCountAll({
+      
+        where: { cliente: email, ordenPedido: ''}
+    });
+    res.status(200).json(carrito)
+
+}
 
 
 //Obtener 1 solo carrito por su nº de orden
@@ -61,32 +75,43 @@ exports.getCarritoByOrder = async (req, res) => {
 
 
 
-//Actualizar carrito por ordenId
+//Actualizar cantidad de un producto del carrito
 
 exports.updateCarrito = async (req, res) => {
-    const ordenPedido = req.params.ordenPedido;
-    //todo
+   
+    console.log(req.body)
+    const { id,cantidad, total} = req.body
 
-    res.send('updated');
+    const carrito = await Carrito.update(
+
+        {
+            cantidad: cantidad,
+            total: total
+          
+        },
+        { where: { id: id } }
+    );
+
+    res.status(200).json(carrito)
 
 }
 
 
-//Eliminar carrito
+//Eliminar producto de Carrito
 exports.deleteCarrito = async (req, res) => {
 
-    const ordenPedido = req.params.ordenPedido;
+    const id = req.params.id;
 
-    const deletedCarrito = await Carrito.destroy(
+    const deletedProdCarrito = await Carrito.destroy(
         {
-            where: { ordenPedido: ordenPedido }
+            where: { id: id }
         });
 
     try {
-        if (deletedCarrito === 1) {
-            res.send({ message: "Borrado" })
+        if (deletedProdCarrito === 1) {
+            res.send({ message: "Producto Borrado" })
         }
-        res.send({ message: "No Borrado" })
+        res.send({ message: "Producto No Borrado" })
     } catch (error) {
         console.log(error)
     }
