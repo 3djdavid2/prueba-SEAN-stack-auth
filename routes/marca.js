@@ -10,6 +10,4 @@ const marcaCtrl = require('../controllers/marca.controller')
 
 router.get('/',  marcaCtrl.getMarca)
 
-
-
 module.exports = router;

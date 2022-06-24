@@ -33,28 +33,13 @@ exports.createCarrito = async (req, res) => {
 
 
 
-//Obtener listado de todos los productos en carrito pendiente de orden o sesion
+// getCarritosPendiente
 
 exports.getCarritos = async (req, res) => {
-
     email = req.body.email
     const carrito = await Carrito.findAndCountAll({
-      
-        where: { cliente: email, ordenPedido: ''},
-    });
 
-    res.status(200).json(carrito)
-
-}
-
-// getCarritoPendiente
-
-exports.getCarritoPendiente = async (req, res) => {
-
-    email = req.body.email
-    const carrito = await Carrito.findAndCountAll({
-      
-        where: { cliente: email, ordenPedido: ''}
+        where: { cliente: email, ordenPedido: '' }
     });
     res.status(200).json(carrito)
 
@@ -78,16 +63,16 @@ exports.getCarritoByOrder = async (req, res) => {
 //Actualizar cantidad de un producto del carrito
 
 exports.updateCarrito = async (req, res) => {
-   
+
     console.log(req.body)
-    const { id,cantidad, total} = req.body
+    const { id, cantidad, total } = req.body
 
     const carrito = await Carrito.update(
 
         {
             cantidad: cantidad,
             total: total
-          
+
         },
         { where: { id: id } }
     );
