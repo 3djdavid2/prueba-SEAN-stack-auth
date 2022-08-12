@@ -18,7 +18,19 @@ Pagos.init({
     monto: {
         type: DataTypes.NUMBER
     },
-    dte: {
+    tipoPago: {
+        type: DataTypes.STRING
+    },
+    transferenciaBanco: {
+        type: DataTypes.STRING
+    },
+    tipoDTE: {
+        type: DataTypes.STRING
+    },
+    folioDTE: {
+        type: DataTypes.STRING
+    },
+    fechaDTE: {
         type: DataTypes.STRING
     },
     codAuth: {

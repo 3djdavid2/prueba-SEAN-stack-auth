@@ -12,6 +12,7 @@ const uploadPhoto = require('../middlewares/photoProd')
 //ROUTER
 router.post('/', verifyToken, uploadPhoto, productsCtrl.createProduct)
 router.get('/', productsCtrl.getProductsByPage)
+router.get('/busca/:value', productsCtrl.findByNameProduct)
 router.get('/count', productsCtrl.getProductsCount)
 router.get('/:productId', productsCtrl.getProductById)
 router.put('/:productId', verifyToken, actualiza, productsCtrl.updateProductById)

@@ -1,13 +1,15 @@
-const { Model, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
+const Marca= require('./marca')
+const Categoria= require('./categoria')
 
-class Product extends Model { }
 
-Product.init({
+const Product = sequelize.define('product', {
+
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement:true,
-        primaryKey:true
+        autoIncrement: true,
+        primaryKey: true
     },
     estado: {
         type: DataTypes.STRING
@@ -15,17 +17,11 @@ Product.init({
     nombre: {
         type: DataTypes.STRING
     },
-    categoria: {
-        type: DataTypes.STRING
-    },
     categoriaId: {
-        type: DataTypes.NUMBER
-    },
-    marca: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
     },
     marcaId: {
-        type: DataTypes.NUMBER
+        type: DataTypes.INTEGER
     },
     descripcion: {
         type: DataTypes.STRING
@@ -39,21 +35,58 @@ Product.init({
     precio: {
         type: DataTypes.NUMBER
     },
+    precioPromo: {
+        type: DataTypes.NUMBER
+    },
+    cantidadPromo: {
+        type: DataTypes.NUMBER
+    },
     cantidad: {
         type: DataTypes.NUMBER
     },
-    
     unidadMedida: {
         type: DataTypes.STRING
     },
     unidMinVenta: {
-        type: DataTypes.DECIMAL(10,2)
+        type: DataTypes.DECIMAL(10, 2)
     },
-}, {
-    sequelize,
-  
-    modelName: 'product'
+    largocm: {
+        type: DataTypes.NUMBER
+    },
+    anchocm: {
+        type: DataTypes.NUMBER
+    },
+    altocm: {
+        type: DataTypes.NUMBER
+    },
+    pesoKg: {
+        type: DataTypes.DECIMAL(10, 2)
+    }
+
+
+});
+
+Marca.hasOne(Product, {
+    foreignKey: 'marcaId',
+    sourceKey:'id'
 })
+
+Product.belongsTo(Marca,{ 
+    foreignKey: 'marcaId',
+    targetId: 'id'
+})
+Categoria.hasOne(Product, {
+    foreignKey: 'categoriaId',
+    sourceKey:'id'
+})
+
+Product.belongsTo(Categoria,{ 
+    foreignKey: 'categoriaId',
+    targetId: 'id'
+})
+
+
+
 
 module.exports = Product;
 

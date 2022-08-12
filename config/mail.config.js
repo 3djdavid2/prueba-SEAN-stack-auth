@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const mail = {
-    user: 'contacto@patronatotelas.cl',
+    user: 'info@patronatotelas.cl',
     pass: process.env.PASS_MAIL
 }
 

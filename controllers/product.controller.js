@@ -1,12 +1,14 @@
 //PRODUCT TABLE
+
 const Product = require('../models/products')
+const { Op } = require('sequelize');
 
 //Crear producto a la base de datos
 exports.createProduct = async (req, res) => {
-    const {nombre, categoria, categoriaId, marca, marcaId,descripcion, imgURL, codigo, precio, cantidad, estado } = req.body
+    const { nombre, categoria, categoriaId, marca, marcaId, descripcion, imgURL, codigo, precio, cantidad, estado } = req.body
 
     const productSave = await Product.create({
-        
+
         nombre,
         categoria,
         categoriaId,
@@ -43,12 +45,29 @@ exports.getProductsByPage = async (req, res) => {
     const products = await Product.findAndCountAll({
         where: {},
         limit: parseInt(req.query.pageSize),
-        offset: parseInt(req.query.pageIndex)
+        offset: parseInt(req.query.pageIndex),
+        include: {
+          all:true
+        }
 
     });
 
     res.json(products);
 }
+
+
+
+//buscar productos por su nombre en Tienda (shop)
+exports.findByNameProduct = async (req, res) => {
+
+    const value = req.params.value;
+    const product = await Product.findOne({
+        where: { descripcion: { [Op.substring]: value} },
+    });
+  
+    res.status(200).json(product)
+}
+
 
 
 

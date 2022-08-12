@@ -2,14 +2,15 @@ const { Router } = require('express');
 const router = Router();
 
 //CONTROLLER
-const categoriaCtrl = require('../controllers/categoria.controller')
+const sucursales = require('../controllers/sucursales.controller')
 
 //MIddleware
 
 
 //ROUTER
 
-router.get('/', categoriaCtrl.getCategoria)
+router.get('/', sucursales.getSucursales)
+
 
 
 module.exports = router;

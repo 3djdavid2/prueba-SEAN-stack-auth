@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
+const EstadoPedido = require('../models/estadoPedido')
 
 class Ordenes extends Model { }
 
@@ -16,7 +17,7 @@ Ordenes.init({
         type: DataTypes.STRING
     },
     horaPedido: {
-        type: DataTypes.NUMBER
+        type: DataTypes.STRING
     },
     cliente: {
         type: DataTypes.STRING
@@ -25,26 +26,33 @@ Ordenes.init({
         type: DataTypes.NUMBER
     },
     items: {
-        type: DataTypes.STRING
+        type: DataTypes.NUMBER
     },
     cantProd: {
-        type: DataTypes.STRING
+        type: DataTypes.NUMBER
     },
     codigoProd: {
         type: DataTypes.NUMBER
     },
     impreso: {
-        type: DataTypes.NUMBER
+        type: DataTypes.STRING
     },
     reenvioFecha: {
-        type: DataTypes.NUMBER
+        type: DataTypes.STRING
     },
-    estado: {
-        type: DataTypes.BOOLEAN
+    estado_id: {
+        type: DataTypes.NUMBER,
+        references: {
+            model: EstadoPedido,
+            key: 'id',
+        }
+
     },
 }, {
     sequelize,
     modelName: 'orden'
 })
+
+Ordenes.belo
 
 module.exports = Ordenes;

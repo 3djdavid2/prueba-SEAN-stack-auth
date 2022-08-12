@@ -1,49 +1,45 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
 
-class Tiendas extends Model { }
+class Retiroenvio extends Model { }
 
-Tiendas.init({
+Retiroenvio.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    nombre: {
+    ordenPedido: {
         type: DataTypes.STRING
     },
-    horario: {
+    lugarEntregaRetiro: {
         type: DataTypes.STRING
     },
-    dias: {
+    tiendaId: {
         type: DataTypes.STRING
     },
-    direccion: {
+    domicilioDireccion: {
         type: DataTypes.STRING
     },
-    lugar: {
+    monto: {
+        type: DataTypes.NUMBER
+    },
+    recibe: {
         type: DataTypes.STRING
     },
-    linkDireccion: {
+    recibeOtra: {
         type: DataTypes.STRING
     },
-    WhatsApp: {
+    rutOtra: {
         type: DataTypes.STRING
     },
-
-    telefono: {
+    nombreOtra: {
         type: DataTypes.STRING
     },
-    encargado: {
-        type: DataTypes.STRING
-    },
-    estado: {
-        type: DataTypes.BOOLEAN
-    }
+    
 }, {
     sequelize,
-
-    modelName: 'tienda'
+    modelName: 'retiroenvio'
 })
 
-module.exports = Tiendas;
+module.exports = Retiroenvio;
