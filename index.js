@@ -1,11 +1,36 @@
+
 const express = require('express');
 const app = express();
+require('dotenv').config();
+const http = require('http');
+const corsOptions = {
+    origin: '*', // Reemplazar con dominio
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+const cors = require('cors')
+app.use(cors(corsOptions));
+
+const optionsServer = {
+    // key: fs.readFileSync('/etc/letsencrypt/live/www.patronatotelas.cl/privkey.pem'),
+    // cert: fs.readFileSync('/etc/letsencrypt/live/www.patronatotelas.cl/cert.pem'),
+    requestCert: false,
+    rejectUnauthorized: false
+    ,
+    path: '/chat/socket.io',
+    cors: {
+        origin: process.env.URL_SOCKET_ANG
+    }
+};
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, optionsServer);
+
 var cookieParser = require("cookie-parser");
 const morgan = require('morgan')
-const cors = require('cors')
+
 
 const path = require('path');
-require('dotenv').config();
+
 var favicon = require("serve-favicon");
 const fs = require('fs')
 
@@ -53,30 +78,12 @@ app.use((req, res, next) => {
     next();
 });
 
-port_socket = process.env.PORT_SOCKET
-url_socket_ang = process.env.URL_SOCKET_ANG
 
-const corsOptions = {
-    origin: '*', // Reemplazar con dominio
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-app.use(cors(corsOptions));
 
-const optionsServer = {
-    // key: fs.readFileSync('/etc/letsencrypt/live/www.patronatotelas.cl/privkey.pem'),
-    // cert: fs.readFileSync('/etc/letsencrypt/live/www.patronatotelas.cl/cert.pem'),
-    requestCert: false,
-    rejectUnauthorized: false
-    ,
-    cors: {
-        origin: url_socket_ang
-    },
 
-};
+// const server = require('http').createServer(app);
+// var io = require('socket.io')(server, optionsServer);
 
-const server = require('http').createServer(app);
-// SocketSingleton.configure(server, options);//
-var io = require('socket.io')(server, optionsServer);
 exports.io = io;
 
 
@@ -129,7 +136,7 @@ app.use('/cotizarDomicilio', require('./routes/cotizarDomicilio'))
 
 //CONECTION SOCKET ***********************************************************************
 
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
     console.log("conectado a socket patronato telas=> handshake: ", socket.id)
 
     socketMap.push(socket);
