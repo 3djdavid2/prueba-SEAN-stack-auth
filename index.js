@@ -28,7 +28,6 @@ const io = new Server(server, optionsServer);
 var cookieParser = require("cookie-parser");
 const morgan = require('morgan')
 
-
 const path = require('path');
 
 var favicon = require("serve-favicon");
@@ -116,23 +115,23 @@ app.use('/uploads', express.static(path.resolve('uploads')));
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/", require('./routes/index'));
-app.use('/webpay_plus', require('./routes/webpay_plus'));
+app.use('/api/webpay_plus', require('./routes/webpay_plus'));
 //todas las rutas empiezan con auth o product
-app.use('/auth', require('./routes/auth'))
-app.use('/carrito', require('./routes/carrito'))
-app.use('/compras', require('./routes/compras'))
-app.use('/send-email', require('./routes/contactoForm'))
-app.use('/perfil', require('./routes/perfil'))
-app.use('/direcciones', require('./routes/direccionesClientes'))
-app.use('/product', require('./routes/product'))
-app.use('/productCodigo', require('./routes/productCodigo'))
-app.use('/productcrud', require('./routes/productcrud'))
-app.use('/marcas', require('./routes/marcas'))
-app.use('/categorias', require('./routes/categorias'))
-app.use('/pack', require('./routes/pack'))
-app.use('/sucursales', require('./routes/sucursales'))
-app.use('/transferencia', require('./routes/transferencia'))
-app.use('/cotizarDomicilio', require('./routes/cotizarDomicilio'))
+app.use('/api/auth', require('./routes/auth'))
+app.use('/api/carrito', require('./routes/carrito'))
+app.use('/api/compras', require('./routes/compras'))
+app.use('/api/send-email', require('./routes/contactoForm'))
+app.use('/api/perfil', require('./routes/perfil'))
+app.use('/api/direcciones', require('./routes/direccionesClientes'))
+app.use('/api/api/product', require('./routes/product'))
+app.use('/api/productCodigo', require('./routes/productCodigo'))
+app.use('/api/productcrud', require('./routes/productcrud'))
+app.use('/api/marcas', require('./routes/marcas'))
+app.use('/api/categorias', require('./routes/categorias'))
+app.use('/api/pack', require('./routes/pack'))
+app.use('/api/sucursales', require('./routes/sucursales'))
+app.use('/api/transferencia', require('./routes/transferencia'))
+app.use('/api/cotizarDomicilio', require('./routes/cotizarDomicilio'))
 
 //CONECTION SOCKET ***********************************************************************
 
@@ -234,7 +233,7 @@ var socketMap = [];
 
 
 //ENDPOINT admin angular post service perfil
-app.put('/precio', async (req, res) => {
+app.put('/api/precio', async (req, res) => {
 
     try {       
         let newPrecio = (req.body.newPrecio);
