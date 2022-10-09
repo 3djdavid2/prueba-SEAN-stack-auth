@@ -11,7 +11,9 @@ exports.getMisDatos = async (req, res) => {
         }
     });
 
-    res.status(200).json(user)
+    const { nombre, rut, direccion, telefono,  id}= user
+
+    res.status(200).json({nombre, rut, direccion, telefono,  id})
 }
 
 

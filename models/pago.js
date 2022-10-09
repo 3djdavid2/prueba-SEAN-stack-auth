@@ -31,13 +31,13 @@ Pagos.init({
         type: DataTypes.STRING
     },
     fechaDTE: {
-        type: DataTypes.STRING
+        type: DataTypes.DATE
     },
     codAuth: {
         type: DataTypes.STRING
     },
     fechaTransaccion: {
-        type: DataTypes.STRING
+        type: DataTypes.DATE
     },
     tipoTJ: {
         type: DataTypes.STRING

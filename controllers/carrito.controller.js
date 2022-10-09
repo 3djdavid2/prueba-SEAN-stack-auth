@@ -1,14 +1,15 @@
-
+const Product = require('../models/products')
 const Carrito = require('../models/carrito')
-
+const { Op } = require('sequelize');
 //Crear producto a la base de datos
 exports.createCarrito = async (req, res) => {
     //aqui llega en req el productId y la cantidad a comprar
 
-
     const {
         productoId,
+        codigo,
         producto,
+        precioOriginal,
         precio,
         cantidad,
         total,
@@ -19,7 +20,9 @@ exports.createCarrito = async (req, res) => {
 
         cliente: email,
         productoId,
+        codigo,
         producto,
+        precioOriginal,
         precio,
         cantidad,
         total,
@@ -36,11 +39,25 @@ exports.createCarrito = async (req, res) => {
 // getCarritosPendiente
 
 exports.getCarritos = async (req, res) => {
-    email = req.body.email
-    const carrito = await Carrito.findAndCountAll({
 
-        where: { cliente: email, ordenPedido: '' }
+    email = req.body.email
+
+    //BUSCA carritos PENDIENTES DE PAGO o ABANDONADOS
+    const carrito = await Carrito.findAndCountAll({
+        // where: {
+        //     cliente: email,
+        //     [Op.not]: [
+        //         {
+        //             ordenPedido: {
+        //                 [Op.startsWith]: 'O'
+        //             }
+        //         }
+        //     ]
+        // }
+         where: { cliente: email, ordenPedido: ''} 
     });
+
+
     res.status(200).json(carrito)
 
 }
@@ -64,12 +81,15 @@ exports.getCarritoByOrder = async (req, res) => {
 
 exports.updateCarrito = async (req, res) => {
 
-    console.log(req.body)
-    const { id, cantidad, total } = req.body
+
+    const { id, codigo, precioOriginal, precio, cantidad, total } = req.body
 
     const carrito = await Carrito.update(
 
         {
+            codigo: codigo,
+            precioOriginal: precioOriginal,
+            precio: precio,
             cantidad: cantidad,
             total: total
 
@@ -87,18 +107,12 @@ exports.deleteCarrito = async (req, res) => {
 
     const id = req.params.id;
 
-    const deletedProdCarrito = await Carrito.destroy(
+    const carrito = await Carrito.destroy(
         {
             where: { id: id }
-        });
-
-    try {
-        if (deletedProdCarrito === 1) {
-            res.send({ message: "Producto Borrado" })
         }
-        res.send({ message: "Producto No Borrado" })
-    } catch (error) {
-        console.log(error)
-    }
+    )
+
+    res.status(200).json({ data: carrito })
 
 }

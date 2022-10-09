@@ -24,10 +24,10 @@ const DireccionesClientes = sequelize.define('direccionesCliente', {
     pisoOficinaDepto: {
         type: DataTypes.STRING
     },
-    comuna: {
+    ciudad: {
         type: DataTypes.STRING
     },
-    ciudad: {
+    provincia: {
         type: DataTypes.STRING
     },
     region: {

@@ -9,6 +9,13 @@ User.init({
         autoIncrement:true,
         primaryKey:true
     },
+    socketId:{
+        type: DataTypes.STRING
+    },
+    token_ws:{
+
+        type: DataTypes.STRING
+    },
     token:{
 
         type: DataTypes.STRING

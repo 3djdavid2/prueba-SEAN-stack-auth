@@ -10,7 +10,9 @@ const verifyToken = require('../middlewares/verifyToken')
 
 //ROUTER
 
-router.get('/', verifyToken, direccion.getMisDatos)
-router.put('/', verifyToken, direccion.updateMisDatos)
+router.get('/', verifyToken, direccion.getDirections)
+router.put('/', verifyToken, direccion.updateDirection)
+router.post('/', verifyToken, direccion.createDirection)
+router.delete('/:id', verifyToken, direccion.deleteDirection)
 
 module.exports = router;

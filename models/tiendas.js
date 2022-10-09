@@ -42,7 +42,6 @@ Tiendas.init({
     }
 }, {
     sequelize,
-
     modelName: 'tienda'
 })
 

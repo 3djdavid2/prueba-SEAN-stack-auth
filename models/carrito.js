@@ -6,8 +6,8 @@ class Carrito extends Model { }
 Carrito.init({
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement:true,
-        primaryKey:true
+        autoIncrement: true,
+        primaryKey: true
     },
     cliente: {
         type: DataTypes.STRING
@@ -15,8 +15,14 @@ Carrito.init({
     productoId: {
         type: DataTypes.NUMBER
     },
+    codigo: {
+        type: DataTypes.NUMBER
+    },
     producto: {
         type: DataTypes.STRING
+    },
+    precioOriginal: {
+        type: DataTypes.NUMBER
     },
     precio: {
         type: DataTypes.NUMBER
@@ -28,14 +34,14 @@ Carrito.init({
         type: DataTypes.NUMBER
     },
     sesion: {
-        type: DataTypes.STRING
+        type: DataTypes.DATE
     },
-    ordenPedido:{
+    ordenPedido: {
         type: DataTypes.STRING
     }
 }, {
     sequelize,
-    
+
     modelName: 'carrito'
 })
 

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
-const Marca= require('./marca')
-const Categoria= require('./categoria')
+const Marca = require('./marca')
+const Categoria = require('./categoria')
 
 
 const Product = sequelize.define('product', {
@@ -12,7 +12,16 @@ const Product = sequelize.define('product', {
         primaryKey: true
     },
     estado: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER,
+        defaultValue: 1
+    },
+    packActivo: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    packTipo: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1
     },
     nombre: {
         type: DataTypes.STRING
@@ -38,8 +47,17 @@ const Product = sequelize.define('product', {
     precioPromo: {
         type: DataTypes.NUMBER
     },
-    cantidadPromo: {
+    multiploLlevaPromo: {
         type: DataTypes.NUMBER
+    },
+    multiploPagaPromo: {
+        type: DataTypes.NUMBER
+    },
+    inicioPromo: {
+        type: DataTypes.DATE
+    },
+    finPromo: {
+        type: DataTypes.DATE
     },
     cantidad: {
         type: DataTypes.NUMBER
@@ -68,19 +86,19 @@ const Product = sequelize.define('product', {
 
 Marca.hasOne(Product, {
     foreignKey: 'marcaId',
-    sourceKey:'id'
+    sourceKey: 'id'
 })
 
-Product.belongsTo(Marca,{ 
+Product.belongsTo(Marca, {
     foreignKey: 'marcaId',
     targetId: 'id'
 })
 Categoria.hasOne(Product, {
     foreignKey: 'categoriaId',
-    sourceKey:'id'
+    sourceKey: 'id'
 })
 
-Product.belongsTo(Categoria,{ 
+Product.belongsTo(Categoria, {
     foreignKey: 'categoriaId',
     targetId: 'id'
 })
