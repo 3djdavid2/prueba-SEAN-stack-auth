@@ -5,7 +5,7 @@ moment.tz("America/Santiago").format();
 const User = require('../models/users')
 //CREAR transaccion y enviar a webpay**-----------------------------------
 
-exports.create = asyncHandler(async function (request, response, next) {
+exports.create = asyncHandler(async function (request, response) {
   console.log("comienzo del create", request.body, request.query, request.params)
   // console.log("el req para crear transaccion trae: ", request)
 
@@ -21,7 +21,7 @@ exports.create = asyncHandler(async function (request, response, next) {
   let costoenviame = +request.query.costoenviame
 
   // let returnUrl = request.protocol + "s://" + request.get("host") + "/api/webpay_plus/commit";
-  let returnUrl = request.protocol + "://" + request.get("host") + "/webpay_plus/commit";
+  let returnUrl = request.protocol + "://" + request.get("host") + "/api/webpay_plus/commit";
 
 
   const createResponse = await (new WebpayPlus.Transaction()).create(

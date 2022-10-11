@@ -78,11 +78,6 @@ app.use((req, res, next) => {
 });
 
 
-
-
-// const server = require('http').createServer(app);
-// var io = require('socket.io')(server, optionsServer);
-
 exports.io = io;
 
 
@@ -123,9 +118,10 @@ app.use('/api/compras', require('./routes/compras'))
 app.use('/api/send-email', require('./routes/contactoForm'))
 app.use('/api/perfil', require('./routes/perfil'))
 app.use('/api/direcciones', require('./routes/direccionesClientes'))
-app.use('/api/api/product', require('./routes/product'))
+app.use('/api/product', require('./routes/product'))
 app.use('/api/productCodigo', require('./routes/productCodigo'))
 app.use('/api/productcrud', require('./routes/productcrud'))
+app.use('/api/orders', require('./routes/orders'))
 app.use('/api/marcas', require('./routes/marcas'))
 app.use('/api/categorias', require('./routes/categorias'))
 app.use('/api/pack', require('./routes/pack'))

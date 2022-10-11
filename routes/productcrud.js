@@ -12,7 +12,7 @@ const productsCRUD = require('../controllers/productcrud.controller')
 
 //MIDDLEWARE
 const verifyToken = require('../middlewares/verifyToken')
-const actualiza = require('../middlewares/product')
+// const actualiza = require('../middlewares/product')
 
 const { uploadPhoto } = require('../middlewares/photoProd')
 

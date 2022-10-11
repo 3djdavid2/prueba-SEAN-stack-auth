@@ -6,11 +6,11 @@ const carrito = require('../controllers/compras.controller')
 
 //MIddleware
 const verifyToken = require('../middlewares/verifyToken')
-const {findUserByEmail} = require('../middlewares/compras')
+const {findUserByEmail, guardarCompraTBK} = require('../middlewares/compras')
 
 //ROUTER
 
 router.get('/', verifyToken, carrito.getCompra)
-router.post('/', [verifyToken, findUserByEmail], carrito.createCompra)
+router.post('/', [verifyToken, findUserByEmail, guardarCompraTBK], carrito.createCompra)
 
 module.exports = router;

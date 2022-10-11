@@ -10,14 +10,22 @@ Ordenes.init({
         autoIncrement: true,
         primaryKey: true
     },
-
     orden: {
+        type: DataTypes.STRING
+    },
+    ot: {
         type: DataTypes.STRING
     },
     email: {
         type: DataTypes.STRING
     },
     idsProductos: {
+        type: DataTypes.STRING
+    },
+    codProductos: {
+        type: DataTypes.STRING
+    },
+    cantProductos: {
         type: DataTypes.STRING
     },
     tipoEntrega: {

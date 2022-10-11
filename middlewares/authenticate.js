@@ -35,9 +35,9 @@ const verifyEmailyPassword = async (req, res, next) => {
 
                 if (verificacion === 'unconfirmed') {//Enviar al CORREO el link de url y token:
 
-                    //Envia token y link al correo del cliente: 
+                    //Envia token y link al correo del cliente: mail ya existe en base de datos, solo que no se confirmó
                     const template = getTemplate(emailF, token);
-                    await sendEmail(emailF, 'Este es un email de prueba-mail existe', template);
+                    await sendEmail(emailF, 'Confirmar cuenta', template);
 
                     //AVISO EN SIGNIN QUE SE LE HA ENVIADO UN CORREO DE CONFIRMACION
                     return res.json({ token: 'tomailconfirm' })
@@ -76,7 +76,7 @@ const verifyEmailyPassword = async (req, res, next) => {
         const template = getTemplate(emailF, token);
 
         // Enviar el email
-        await sendEmail(emailF, 'Este es un email de prueba', template);
+        await sendEmail(emailF, 'Confirmar cuenta nueva', template);
         //Aviso al cliente que se le ha enviado un correo con link para confirmacion
         return res.json({ token: 'tomailconfirm' })
 
