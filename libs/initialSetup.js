@@ -1,5 +1,6 @@
 const Role = require('../models/role');
 const EstadoPedido = require('../models/estadoPedido')
+const TipoEntrega = require('../models/tipoEntrega')
 
 exports.createRoles = async () => {
     try {
@@ -10,7 +11,7 @@ exports.createRoles = async () => {
         const count = roles.count
         if (count > 0) return;
 
-        const rolesSave = await Promise.all([
+        await Promise.all([
             Role.create({
                 name: 'admin',
             }),
@@ -20,16 +21,41 @@ exports.createRoles = async () => {
             Role.create({
                 name: "client"
             })
-        ])      
+        ])
 
     } catch (error) {
         console.error(error)
     }
 }
 
+exports.createTipoEntrega = async () => {
+    try {
+        const tipo = await TipoEntrega.findAndCountAll({
+            where: {}
+        });
+
+        const count = tipo.count
+        if (count > 0) return;
+
+        await Promise.all([
+            TipoEntrega.create({
+                name: 'tienda',
+            }),
+            TipoEntrega.create({
+                name: 'enviame'
+            }),
+            TipoEntrega.create({
+                name: "pagar"
+            })
+        ])
+
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 exports.createEstadoPedido = async () => {
-    
+
     try {
         const estado = await EstadoPedido.findAndCountAll({
             where: {}
@@ -38,7 +64,7 @@ exports.createEstadoPedido = async () => {
         const counta = estado.count
         if (counta > 0) return;
 
-        const estadoSave = await Promise.all([
+        await Promise.all([
             EstadoPedido.create({
                 name: 'listoparadespacho',
             }),
@@ -59,7 +85,7 @@ exports.createEstadoPedido = async () => {
             })
         ])
 
-    
+
 
     } catch (error) {
         console.error(error)

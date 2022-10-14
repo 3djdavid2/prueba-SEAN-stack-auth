@@ -36,7 +36,7 @@ const fs = require('fs')
 //sequelize ORM
 const sequelize = require('./database.js');
 
-const { createRoles, createEstadoPedido } = require('./libs/initialSetup.js');
+const { createRoles, createEstadoPedido, createTipoEntrega } = require('./libs/initialSetup.js');
 
 const { Products } = require('./models/products')
 const { Marca } = require('./models/marca')
@@ -85,6 +85,7 @@ exports.io = io;
 
 createRoles();//creacion de modelo de roles si no existen en bd: admin, moderator, user.
 createEstadoPedido();//creacion de modelo estados de los pedidos, enviado, cancelado, etc.
+createTipoEntrega();//creacion de modelo tipo, entrega en sucursal, envio por pagar, o enviame
 
 Products;
 Marca;

@@ -1,15 +1,13 @@
 require('dotenv').config();
 
-
-//TODO
 const Ordenes = require('../models/orden');
 const Carrito = require('../models/carrito');
-const RespuestaEnviame = require('../models/respEnviame');
-
-
+const RespuestaEnviame= require('../models/respEnviame');
+const TipoEntrega = require('../models/tipoEntrega');
 const { Op } = require('sequelize');
-const moment = require('moment-timezone');
-moment.tz("America/Santiago").format();
+
+// const moment = require('moment-timezone');
+// moment.tz("America/Santiago").format();
 
 //Obtener listado de compras con orden pagadas //QUE NO SEAN VACIAS=> [Op.ne]: ''
 
@@ -31,34 +29,41 @@ exports.getCompra = async (req, res) => {
 
 exports.createCompra = async (req, res) => {
 
-
     const { calleNombre, calleNumero, ciudad, pisoOficinaDepto } = req.body
-
 
     let ordenPedido = req.body.datosCompra.commitResponse.buy_order
     const { email } = req.body
 
+    var OT = 0
+    var status_name = 'Preparación de Pedido'
+    var status_code = ''
 
-    console.log('ordenPedido', ordenPedido)
-    //obtengo numero de tracking //todo
+    //obtengo numero de tracking 
 
-    const numberOT = await RespuestaEnviame.findAll(
+    const datosEnviame = await RespuestaEnviame.findAll(
         {
             raw: true,
-            where: { imported_id: `O-${ordenPedido}` }
+            where: { imported_id: ordenPedido }
         }
     );
 
-    console.log("el numberot encontrado es: ", numberOT[0])
+   
 
-    const OT = numberOT[0].tracking_number
+    if (datosEnviame.length > 0) {//existe
 
+        console.log("el number ot encontrado es: ", datosEnviame[0])
+        OT = datosEnviame[0].tracking_number;
+        status_name = datosEnviame[0].status_name;
+        status_code = datosEnviame[0].status_code;
+
+    } 
+
+    var tipoEntrega=req.body.detalleCompra.tipoEntrega
 
     const {
         idsProductos,
         codProductos,
         cantProductos,
-        tipoEntrega,
         tienda,
         quienRetira,
         rutRetira,
@@ -75,8 +80,10 @@ exports.createCompra = async (req, res) => {
     } = req.body.detalleCompra
     // const { calleNombre, calleNumero, ciudad, pisoOficinaDepto } = req.body
     await Ordenes.create({
-        orden: `O-${ordenPedido}`,
+        orden: ordenPedido,
         ot: OT,
+        status_name,
+        status_code,
         email,
         idsProductos: idsProductos.toString(),
         codProductos: codProductos.toString(),
@@ -98,7 +105,26 @@ exports.createCompra = async (req, res) => {
         telFA,
     })
 
-    //
+    const tipo = await TipoEntrega.findAll(
+        {
+            raw:true,
+            where: {id:tipoEntrega}
+        }
+    )
+
+   const strTipoEntrega = tipo[0].name
+
+    //actualiza estado de carrito de cliente
+    await Carrito.update(
+        {
+            estado: status_name,
+            tipoEntrega: strTipoEntrega
+        },
+
+        {
+            where: {ordenPedido}
+        }
+    )
 
     res.status(200).json({ message: 'ok' });
 

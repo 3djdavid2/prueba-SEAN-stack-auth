@@ -69,7 +69,7 @@ exports.getCarritoByOrder = async (req, res) => {
     const ordenPedido = req.params.ordenPedido;
     const carrito = await Carrito.findOne({
         where: {
-            ordenPedido: `O-${ordenPedido}`
+            ordenPedido
         }
     });
     res.status(200).json(carrito)
@@ -93,7 +93,7 @@ exports.updateCarrito = async (req, res) => {
             total: total
 
         },
-        { where: { id: id } }
+        { where: { id } }
     );
 
     res.status(200).json(carrito)
@@ -108,7 +108,7 @@ exports.deleteCarrito = async (req, res) => {
 
     const carrito = await Carrito.destroy(
         {
-            where: { id: id }
+            where: { id }
         }
     )
 

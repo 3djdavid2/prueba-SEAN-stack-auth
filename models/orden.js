@@ -16,6 +16,12 @@ Ordenes.init({
     ot: {
         type: DataTypes.STRING
     },
+    status_name: {
+        type: DataTypes.STRING
+    },
+    status_code: {
+        type: DataTypes.STRING
+    },
     email: {
         type: DataTypes.STRING
     },

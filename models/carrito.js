@@ -9,6 +9,9 @@ Carrito.init({
         autoIncrement: true,
         primaryKey: true
     },
+    tipoEntrega: {
+        type: DataTypes.STRING
+    },
     cliente: {
         type: DataTypes.STRING
     },
@@ -37,6 +40,9 @@ Carrito.init({
         type: DataTypes.DATE
     },
     ordenPedido: {
+        type: DataTypes.STRING
+    },
+    estado: {
         type: DataTypes.STRING
     }
 }, {

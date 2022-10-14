@@ -15,7 +15,7 @@ exports.createTransferencia = async (req, res) => {
         email,
     } = req.body
 
-    transferenciaSave = await Transferencia.create({
+  const transferenciaSave = await Transferencia.create({
 
         cliente: email,
         productoId,

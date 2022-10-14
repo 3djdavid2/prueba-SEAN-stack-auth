@@ -1,4 +1,3 @@
-
 const { Router } = require('express');
 const router = Router();
 const multer = require('multer')
@@ -8,7 +7,6 @@ const Pack = require('../models/packs')
 
 //CONTROLLER
 const productsCRUD = require('../controllers/productcrud.controller')
-
 
 //MIDDLEWARE
 const verifyToken = require('../middlewares/verifyToken')
@@ -24,16 +22,15 @@ const storage = multer.memoryStorage({
     }
 })
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req, file, cb) => {   
 
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
         cb(null, true)
     } else {
         cb(null, false)
     }
 }
 const upload = multer({ storage, fileFilter });
-
 
 // MIDDLEWARE PACK UPDATE**
 const updatePack = async (req, res, next) => {
@@ -44,11 +41,7 @@ const updatePack = async (req, res, next) => {
     packActivo= allProdparsed.packActivo
     mismoProdparsed = allProdparsed.mismoProd
 
-    console.log("update del pack estado: ", packActivo)
-    
-
     mismoProdparsed.forEach(async (el) => {
-
      
         const {
             id,
@@ -83,10 +76,7 @@ const updatePack = async (req, res, next) => {
                 },
                 { where: { id: id } }
             )
-
-        }
-        //  
-
+        }  
 
     });
 

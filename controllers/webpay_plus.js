@@ -11,7 +11,7 @@ exports.create = asyncHandler(async function (request, response) {
 
   let fechaActual = Date.now();
 
-  let buyOrder = moment().format('DMMyyyy-HHmm')
+  let buyOrder = 'O-' + moment().format('DMMyyyy-HHmmss')
   let sessionId = moment.tz(fechaActual, "America/Santiago").format();
 
   let socketId = request.query.skid

@@ -1,8 +1,8 @@
 require('dotenv').config();
 var axios = require('axios');
 
-const moment = require('moment-timezone');
-moment.tz("America/Santiago").format();
+// const moment = require('moment-timezone');
+// moment.tz("America/Santiago").format();
 
 const User = require('../models/users')
 const DireccionesClientes = require('../models/direccionesCliente');
@@ -12,8 +12,6 @@ const Carrito = require('../models/carrito');
 const RespuestaEnviame = require('../models/respEnviame');
 
 const guardarCompraTBK = async (req, res, next) => {
-
-    console.log("MIDDLEWARE guardarCompraTBK")
 
     const { name, phone, email } = req.body
     const { dimensions, DomicilioId, totalaPagar, tipoEntrega } = req.body.detalleCompra
@@ -50,7 +48,7 @@ const guardarCompraTBK = async (req, res, next) => {
     await Carrito.update(
         {
             sesion: sessionId,
-            ordenPedido: `O-${ordenPedido}`
+            ordenPedido: ordenPedido
         },
         { where: { cliente: email, ordenPedido: '' } }
     );
@@ -93,7 +91,7 @@ const guardarCompraTBK = async (req, res, next) => {
                 cantidad: 1,
                 total: costoEnviame,
                 sesion: sessionId,
-                ordenPedido: `O-${ordenPedido}`
+                ordenPedido: ordenPedido
             });
 
             //guardar y generar post para que aparezca el envio en plataforma de ENVIAME:
@@ -104,7 +102,7 @@ const guardarCompraTBK = async (req, res, next) => {
                 {
                     n_packages: 1,
                     content_description: 'telas, maquinas coser',
-                    imported_id: `O-${ordenPedido}`,
+                    imported_id: ordenPedido,
                     order_price: totalaPagar,
                     weight: pesoKG,
                     volume: volumenM3,
@@ -129,7 +127,7 @@ const guardarCompraTBK = async (req, res, next) => {
                 "shipping_order": {
                     "n_packages": 1,
                     "content_description": "telas, maquinas coser",
-                    "imported_id": `O-${ordenPedido}`,
+                    "imported_id": ordenPedido,
                     "order_price": totalaPagar,
                     "weight": pesoKG,
                     "volume": volumenM3,

@@ -9,20 +9,18 @@ const s3 = new Aws.S3({
 
 
 const uploadPhoto = async (req, res, next) => {
-
+    console.log("uploadPhoto-21-midlle-photoprod,js", req.file)
     try {        
-
         if (req.body.updatePhoto == 'false') {
             console.log("no existe file de imagen para update")
             req.body.Location = ''
             next();
-        } else {
-            console.log("existe imagen file y se subira a S3")
+        } else {           
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,      // bucket that we made earlier
                 Key: req.file.originalname,               // Name of the image
                 Body: req.file.buffer,                    // Body which will contain the image in buffer format
-                ContentType: "image/jpeg"                 // Necessary to define the image content-type to view the photo in the browser with the link
+                ContentType: req.file.mimetype           // Necessary to define the image content-type to view the photo in the browser with the link
             };
 
 
@@ -45,9 +43,6 @@ const uploadPhoto = async (req, res, next) => {
 
         next()
     }
-
-
-
 
 }
 

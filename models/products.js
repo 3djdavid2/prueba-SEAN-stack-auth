@@ -79,7 +79,19 @@ const Product = sequelize.define('product', {
     },
     pesoKg: {
         type: DataTypes.DECIMAL(10, 2)
-    }
+    },
+    sprite: {
+        type: DataTypes.STRING
+    },
+    banner: {
+        type: DataTypes.STRING
+    },
+    video: {
+        type: DataTypes.STRING
+    },
+    usuario: {
+        type: DataTypes.STRING
+    },
 
 
 });
