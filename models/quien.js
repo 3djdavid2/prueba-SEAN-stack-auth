@@ -1,9 +1,7 @@
-const {Model, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../database.js');
 
-
-class Categoria extends Model { }
-Categoria.init({
+const Quien = sequelize.define('quien', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -13,11 +11,6 @@ Categoria.init({
         type: DataTypes.STRING
     },
 
-}, {
-    sequelize,
-    modelName: 'categoria'
-
-
 });
 
-module.exports = Categoria;
+module.exports = Quien;

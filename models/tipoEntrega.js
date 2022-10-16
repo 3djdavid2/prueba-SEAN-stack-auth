@@ -10,9 +10,8 @@ TipoEntrega.init({
         type: DataTypes.STRING
     }
 }, {
-    sequelize,
-    
-    modelName: 'tipoEntrega'
+    sequelize,    
+    modelName: 'tipoEntregas'
 })
 
 module.exports = TipoEntrega;

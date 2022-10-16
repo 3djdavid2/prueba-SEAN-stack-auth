@@ -9,13 +9,13 @@ const s3 = new Aws.S3({
 
 
 const uploadPhoto = async (req, res, next) => {
-    console.log("uploadPhoto-21-midlle-photoprod,js", req.file)
-    try {        
+   
+    try {
         if (req.body.updatePhoto == 'false') {
-            console.log("no existe file de imagen para update")
+            console.log("req.body.updatePhoto == 'false', (no existe file de imagen para update)")
             req.body.Location = ''
             next();
-        } else {           
+        } else {
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,      // bucket that we made earlier
                 Key: req.file.originalname,               // Name of the image
@@ -26,7 +26,7 @@ const uploadPhoto = async (req, res, next) => {
 
             s3.upload(params).promise()
                 .then((resp) => {
-                    console.log("mid= url desde s3:", resp.Location)
+                 
                     req.body.Location = resp.Location
                     next()
 
@@ -36,11 +36,10 @@ const uploadPhoto = async (req, res, next) => {
                     req.body.Location = "error al subir imagen a aws"
                     next()
                 })
+        };
 
-        }
     } catch (error) {
-        console.log(error)
-
+        console.log("el error es:", error)
         next()
     }
 

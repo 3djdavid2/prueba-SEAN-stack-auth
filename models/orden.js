@@ -1,6 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
-// const EstadoPedido = require('../models/estadoPedido')
+
+const EstadoPedido = require('../models/estadoPedido')
+const TipoEntrega = require('../models/tipoEntrega')
+const Tiendas = require('../models/tiendas')
 
 class Ordenes extends Model { }
 
@@ -34,14 +37,14 @@ Ordenes.init({
     cantProductos: {
         type: DataTypes.STRING
     },
-    tipoEntrega: {
-        type: DataTypes.STRING
+    tipoEntregaId: {
+        type: DataTypes.INTEGER
     },
-    tienda: {
-        type: DataTypes.STRING
+    tiendaId: {
+        type: DataTypes.INTEGER
     },
-    quienRetira: {
-        type: DataTypes.STRING
+    quienRetiraId: {
+        type: DataTypes.INTEGER
     },
     rutRetira: {
         type: DataTypes.STRING
@@ -52,8 +55,8 @@ Ordenes.init({
     DomicilioId: {
         type: DataTypes.NUMBER
     },
-    quienRecibe: {
-        type: DataTypes.STRING
+    quienRecibeId: {
+        type: DataTypes.INTEGER
     },
     rutRecibe: {
         type: DataTypes.STRING
@@ -61,11 +64,11 @@ Ordenes.init({
     nombreRecibe: {
         type: DataTypes.STRING
     },
-    tipoDoc: {
-        type: DataTypes.STRING
+    tipoDocId: {
+        type: DataTypes.INTEGER
     },
-    tipoDatosFA: {
-        type: DataTypes.STRING
+    tipoDatosFAId: {
+        type: DataTypes.INTEGER
     },
     rutFA: {
         type: DataTypes.STRING
@@ -79,14 +82,30 @@ Ordenes.init({
     telFA: {
         type: DataTypes.STRING
     },
-
-
-
 }, {
     sequelize,
     modelName: 'orden'
-})
+});
 
+//
+TipoEntrega.hasOne(Ordenes, {
+    foreignKey: 'tipoEntregaId',   
+    sourceKey: 'id'
+});
+Ordenes.belongsTo(TipoEntrega, {
+    foreignKey: 'tipoEntregaId',   
+    targetId: 'id'
+});
 
+//
+Tiendas.hasOne(Ordenes, {
+    foreignKey: 'tiendaId',  
+    sourceKey: 'id'
+});
+Ordenes.belongsTo(Tiendas, {
+    foreignKey: 'tiendaId', 
+    targetId: 'id'
+});
+//
 
 module.exports = Ordenes;

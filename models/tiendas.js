@@ -42,7 +42,7 @@ Tiendas.init({
     }
 }, {
     sequelize,
-    modelName: 'tienda'
+    modelName: 'tiendas'
 })
 
 module.exports = Tiendas;

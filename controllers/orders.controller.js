@@ -23,8 +23,10 @@ exports.getOrderById = async (req, res) => {
 exports.getOrders = async (req, res) => {
 
     var finded = await Ordenes.findAll({
-        raw: true, // where: { estado: packActivo }, //cambio para llevar todos los packs aunque esten desactivados en cero.
         where: {},
+        include: {          
+            all: true
+        }
     });
 
 
@@ -38,17 +40,17 @@ exports.updateOrderById = async (req, res) => {
 
     const {
 
-        tipoEntrega,
-        tienda,
-        quienRetira,
+        tipoEntregaId,
+        tiendaId,
+        quienRetiraId,
         rutRetira,
         nombreRetira,
         DomicilioId,
-        quienRecibe,
+        quienRecibeId,
         rutRecibe,
         nombreRecibe,
-        tipoDoc,
-        tipoDatosFA,
+        tipoDocId,
+        tipoDatosFAId,
         rutFA,
         razonFA,
         giroFA,
@@ -58,17 +60,17 @@ exports.updateOrderById = async (req, res) => {
     const updated = await Ordenes.update(
 
         {
-            tipoEntrega,
-            tienda,
-            quienRetira,
+            tipoEntregaId,
+            tiendaId,
+            quienRetiraId,
             rutRetira,
             nombreRetira,
             DomicilioId,
-            quienRecibe,
+            quienRecibeId,
             rutRecibe,
             nombreRecibe,
-            tipoDoc,
-            tipoDatosFA,
+            tipoDocId,
+            tipoDatosFAId,
             rutFA,
             razonFA,
             giroFA,

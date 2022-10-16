@@ -4,24 +4,19 @@ const multer = require('multer')
 
 //models
 const Pack = require('../models/packs')
-
 //CONTROLLER
 const productsCRUD = require('../controllers/productcrud.controller')
-
 //MIDDLEWARE
 const verifyToken = require('../middlewares/verifyToken')
 // const actualiza = require('../middlewares/product')
-
 const { uploadPhoto } = require('../middlewares/photoProd')
 
 //multer middleware
-
 const storage = multer.memoryStorage({
     destination: function (req, file, cb) {
         cb(null, '')
     }
 })
-
 const fileFilter = (req, file, cb) => {   
 
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {

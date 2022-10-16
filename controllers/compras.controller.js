@@ -2,23 +2,20 @@ require('dotenv').config();
 
 const Ordenes = require('../models/orden');
 const Carrito = require('../models/carrito');
-const RespuestaEnviame= require('../models/respEnviame');
+const RespuestaEnviame = require('../models/respEnviame');
 const TipoEntrega = require('../models/tipoEntrega');
 const { Op } = require('sequelize');
 
-// const moment = require('moment-timezone');
-// moment.tz("America/Santiago").format();
 
 //Obtener listado de compras con orden pagadas //QUE NO SEAN VACIAS=> [Op.ne]: ''
 
 exports.getCompra = async (req, res) => {
 
-    email = req.body.email
+    email = req.body.email;
+    
     const compras = await Carrito.findAndCountAll({
         order: [['sesion', 'desc']],
-
         where: { cliente: email, ordenPedido: { [Op.ne]: '' } }
-
     });
 
     res.status(200).json(compras);
@@ -28,6 +25,13 @@ exports.getCompra = async (req, res) => {
 //Crear compra
 
 exports.createCompra = async (req, res) => {
+
+    console.log("CREATEcOMPRA REQ,BODY:", req.body)
+
+    var tiendaId = null;
+    var quienRetiraId = null;
+    var quienRecibeId = null;
+    var tipoDatosFAId = null;
 
     const { calleNombre, calleNumero, ciudad, pisoOficinaDepto } = req.body
 
@@ -47,38 +51,62 @@ exports.createCompra = async (req, res) => {
         }
     );
 
-   
+
 
     if (datosEnviame.length > 0) {//existe
 
-        console.log("el number ot encontrado es: ", datosEnviame[0])
         OT = datosEnviame[0].tracking_number;
         status_name = datosEnviame[0].status_name;
         status_code = datosEnviame[0].status_code;
 
-    } 
+    }
 
-    var tipoEntrega=req.body.detalleCompra.tipoEntrega
+    //convierto a numero INTEGER para foreingkey
+
+    var tipoEntregaId = +req.body.detalleCompra.tipoEntrega
+
+    if (tipoEntregaId == 1) {
+        console.log("entrega en tienda")
+        tiendaId = +req.body.detalleCompra.tienda
+        quienRetiraId = +req.body.detalleCompra.quienRetira
+
+    } else if (tipoEntregaId == 2) {
+        console.log("envio por pagar")
+        quienRecibeId = +req.body.detalleCompra.quienRecibe
+
+    } else if (tipoEntregaId == 3) {
+        console.log("enviame")
+        quienRecibeId = +req.body.detalleCompra.quienRecibe
+    };
+
+
+    var tipoDocId = +req.body.detalleCompra.tipoDoc
+
+    if (tipoDocId == 1) {
+        console.log("tipodoc 1 es BOLETA")
+
+    } else if (tipoDocId == 2) {
+        console.log("tipodoc 2 es FACTURA")
+        tipoDatosFAId = +req.body.detalleCompra.tipoDatosFA
+
+    };
+
 
     const {
         idsProductos,
         codProductos,
         cantProductos,
-        tienda,
-        quienRetira,
         rutRetira,
         nombreRetira,
-        quienRecibe,
         rutRecibe,
         nombreRecibe,
-        tipoDoc,
-        tipoDatosFA,
         rutFA,
         razonFA,
         giroFA,
         telFA,
     } = req.body.detalleCompra
-    // const { calleNombre, calleNumero, ciudad, pisoOficinaDepto } = req.body
+
+    //TODO crear esto en rutas-*-*-*-**-**-*-*-*
     await Ordenes.create({
         orden: ordenPedido,
         ot: OT,
@@ -88,17 +116,17 @@ exports.createCompra = async (req, res) => {
         idsProductos: idsProductos.toString(),
         codProductos: codProductos.toString(),
         cantProductos: cantProductos.toString(),
-        tipoEntrega,
-        tienda,
-        quienRetira,
+        tipoEntregaId,
+        tiendaId,
+        quienRetiraId,
         rutRetira,
         nombreRetira,
         DomicilioId: calleNombre + ' ' + calleNumero + ' ' + ciudad,
-        quienRecibe,
+        quienRecibeId,
         rutRecibe,
         nombreRecibe,
-        tipoDoc,
-        tipoDatosFA,
+        tipoDocId,
+        tipoDatosFAId,
         rutFA,
         razonFA,
         giroFA,
@@ -107,12 +135,12 @@ exports.createCompra = async (req, res) => {
 
     const tipo = await TipoEntrega.findAll(
         {
-            raw:true,
-            where: {id:tipoEntrega}
+            raw: true,
+            where: { id: tipoEntregaId }
         }
     )
 
-   const strTipoEntrega = tipo[0].name
+    const strTipoEntrega = tipo[0].name
 
     //actualiza estado de carrito de cliente
     await Carrito.update(
@@ -122,7 +150,7 @@ exports.createCompra = async (req, res) => {
         },
 
         {
-            where: {ordenPedido}
+            where: { ordenPedido }
         }
     )
 
