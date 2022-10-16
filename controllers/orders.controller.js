@@ -1,10 +1,8 @@
 //packs
 const Ordenes = require('../models/orden')
 
-
 //Obtener listado de packs por id ACTIVO O INACTIVO
 exports.getOrderById = async (req, res) => {
-
 
     const id = req.params.id;
 
@@ -29,14 +27,13 @@ exports.getOrders = async (req, res) => {
         }
     });
 
-
     res.status(201).json(finded);
-
 }
 
 
-
 exports.updateOrderById = async (req, res) => {
+
+    console.log("update order req.body here: ", req.body)
 
     const {
 

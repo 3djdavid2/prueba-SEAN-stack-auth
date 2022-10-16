@@ -2,8 +2,15 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
 
 const EstadoPedido = require('../models/estadoPedido')
+
 const TipoEntrega = require('../models/tipoEntrega')
 const Tiendas = require('../models/tiendas')
+
+const TipoDocTribut = require('../models/tipoDocTribut')
+const TipoDatosFA = require('../models/tipoDatosFA')
+const QuienRetiraTienda = require('../models/quienRetiraTienda')
+const QuienRecibe = require('../models/quienRecibe')
+
 
 class Ordenes extends Model { }
 
@@ -84,8 +91,59 @@ Ordenes.init({
     },
 }, {
     sequelize,
-    modelName: 'orden'
+    modelName: 'ordens'
 });
+
+
+//
+QuienRecibe.hasOne(Ordenes, {
+    foreignKey: 'quienRecibeId',   
+    sourceKey: 'id'
+});
+Ordenes.belongsTo(QuienRecibe, {
+    foreignKey: 'quienRecibeId',   
+    targetId: 'id'
+});
+
+//
+QuienRetiraTienda.hasOne(Ordenes, {
+    foreignKey: 'quienRetiraId',   
+    sourceKey: 'id'
+});
+Ordenes.belongsTo(QuienRetiraTienda, {
+    foreignKey: 'quienRetiraId',   
+    targetId: 'id'
+});
+
+//
+
+//
+TipoDatosFA.hasOne(Ordenes, {
+    foreignKey: 'tipoDatosFAId',   
+    sourceKey: 'id'
+});
+Ordenes.belongsTo(TipoDatosFA, {
+    foreignKey: 'tipoDatosFAId',   
+    targetId: 'id'
+});
+
+//
+
+//
+TipoDocTribut.hasOne(Ordenes, {
+    foreignKey: 'tipoDocId',   
+    sourceKey: 'id'
+});
+Ordenes.belongsTo(TipoDocTribut, {
+    foreignKey: 'tipoDocId',   
+    targetId: 'id'
+});
+
+//
+
+
+
+
 
 //
 TipoEntrega.hasOne(Ordenes, {

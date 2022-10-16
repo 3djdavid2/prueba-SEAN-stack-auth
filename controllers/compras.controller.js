@@ -33,64 +33,53 @@ exports.createCompra = async (req, res) => {
     var quienRecibeId = null;
     var tipoDatosFAId = null;
 
-    const { calleNombre, calleNumero, ciudad, pisoOficinaDepto } = req.body
-
-    let ordenPedido = req.body.datosCompra.commitResponse.buy_order
-    const { email } = req.body
-
     var OT = 0
     var status_name = 'Preparación de Pedido'
     var status_code = ''
 
-    //obtengo numero de tracking 
+    const { calleNombre, calleNumero, ciudad, pisoOficinaDepto } = req.body
 
-    const datosEnviame = await RespuestaEnviame.findAll(
-        {
-            raw: true,
-            where: { imported_id: ordenPedido }
-        }
-    );
+    var ordenPedido = req.body.datosCompra.commitResponse.buy_order
+    const { email } = req.body
 
+    //documento tributario*-*-*-
+    var tipoDocId = +req.body.detalleCompra.tipoDoc
+    if (tipoDocId == 2) {
+        console.log("tipodoc 2 es FACTURA")
+        tipoDatosFAId = +req.body.detalleCompra.tipoDatosFA
+    };
 
+   
+    //   
+    var tipoEntregaId = +req.body.detalleCompra.tipoEntrega
 
-    if (datosEnviame.length > 0) {//existe
+    if (tipoEntregaId == 2) {//ENVIAME
+
+        const datosEnviame = await RespuestaEnviame.findAll(
+            {
+                raw: true,
+                where: { imported_id: ordenPedido }
+            }
+        );    
 
         OT = datosEnviame[0].tracking_number;
         status_name = datosEnviame[0].status_name;
         status_code = datosEnviame[0].status_code;
+        quienRecibeId = +req.body.detalleCompra.quienRecibe
 
-    }
+    } 
 
-    //convierto a numero INTEGER para foreingkey
 
-    var tipoEntregaId = +req.body.detalleCompra.tipoEntrega
 
     if (tipoEntregaId == 1) {
         console.log("entrega en tienda")
         tiendaId = +req.body.detalleCompra.tienda
         quienRetiraId = +req.body.detalleCompra.quienRetira
 
-    } else if (tipoEntregaId == 2) {
+    }  else if (tipoEntregaId == 3) {
         console.log("envio por pagar")
-        quienRecibeId = +req.body.detalleCompra.quienRecibe
-
-    } else if (tipoEntregaId == 3) {
-        console.log("enviame")
-        quienRecibeId = +req.body.detalleCompra.quienRecibe
+        // quienRecibeId = +req.body.detalleCompra.quienRecibe
     };
-
-
-    var tipoDocId = +req.body.detalleCompra.tipoDoc
-
-    if (tipoDocId == 1) {
-        console.log("tipodoc 1 es BOLETA")
-
-    } else if (tipoDocId == 2) {
-        console.log("tipodoc 2 es FACTURA")
-        tipoDatosFAId = +req.body.detalleCompra.tipoDatosFA
-
-    };
-
 
     const {
         idsProductos,

@@ -36,7 +36,14 @@ const fs = require('fs')
 //sequelize ORM
 const sequelize = require('./database.js');
 
-const { createRoles, createEstadoPedido, createTipoEntrega } = require('./libs/initialSetup.js');
+const { createRoles,
+    createTipoDocTributario,
+    createTipoDatosFA,
+    createTipoEntrega,
+    createQuienRetiraTienda,
+    createQuienRecibe,
+    createEstadoPedido,
+} = require('./libs/initialSetup.js');
 
 const { Products } = require('./models/products')
 const { Marca } = require('./models/marca')
@@ -82,10 +89,14 @@ exports.io = io;
 
 
 //************************************* */
-
-createRoles();//creacion de modelo de roles si no existen en bd: admin, moderator, user.
-createEstadoPedido();//creacion de modelo estados de los pedidos, enviado, cancelado, etc.
-createTipoEntrega();//creacion de modelo tipo, entrega en sucursal, envio por pagar, o enviame
+createRoles();
+createTipoDocTributario()
+createTipoDatosFA()
+createTipoEntrega()
+createQuienRetiraTienda()
+createQuienRecibe()
+createEstadoPedido()
+//***** */
 
 Products;
 Marca;
@@ -136,7 +147,7 @@ io.on('connection', (socket) => {
     console.log("conectado a socket patronato telas=> handshake: ", socket.id)
 
     socketMap.push(socket);
-    socket.emit('test', { "id": socket.id })  
+    socket.emit('test', { "id": socket.id })
 
     // * Si un dispositivo se desconecto lo detectamos aqui
     socket.on('disconnect', function () {
@@ -232,7 +243,7 @@ var socketMap = [];
 //ENDPOINT admin angular post service perfil
 app.put('/api/precio', async (req, res) => {
 
-    try {       
+    try {
         let newPrecio = (req.body.newPrecio);
         precioUpdate(newPrecio);
         res.status(201).json(newPrecio);
@@ -242,7 +253,7 @@ app.put('/api/precio', async (req, res) => {
         res.status(400).send(err);
     }
 });
-async function precioUpdate(newPrecio) {   
+async function precioUpdate(newPrecio) {
     for (let socketMapObj of socketMap) {
         //
         // for socketMapObj of socketMap:> Socket {
@@ -521,7 +532,7 @@ async function precioUpdate(newPrecio) {
         //     },
         //     [Symbol(kCapture)]: false
         //   }
-        socketMapObj.emit('actualizaPrecio', newPrecio);        
+        socketMapObj.emit('actualizaPrecio', newPrecio);
     }
 }
 
