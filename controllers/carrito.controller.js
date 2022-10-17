@@ -66,8 +66,8 @@ exports.getCarritos = async (req, res) => {
 //Obtener 1 solo carrito por su nº de orden
 exports.getCarritoByOrder = async (req, res) => {
 
-    const ordenPedido = req.params.ordenPedido;
-    const carrito = await Carrito.findOne({
+    const ordenPedido = req.params.id;
+    const carrito = await Carrito.findAll({
         where: {
             ordenPedido
         }

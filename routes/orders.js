@@ -4,16 +4,17 @@ const router = Router();
 
 //CONTROLLER
 const ordersCtrl = require('../controllers/orders.controller')
-
+//MIddleware
+const verifyToken = require('../middlewares/verifyToken')
 
 //ROUTER
 
 
-router.get('/', ordersCtrl.getOrders)
-router.get('/busca/:id', ordersCtrl.getOrderById)
-// router.post('/', ordersCtrl.createOrder) //SE CREAN EN COMPRAS.CONTROLLER//
-router.put('/:id', ordersCtrl.updateOrderById)
-router.delete('/:id', ordersCtrl.deleteOrderById)
+router.get('/', verifyToken, ordersCtrl.getOrders)
+router.get('/busca/:id',verifyToken, ordersCtrl.getOrderById)
+// router.post('/', verifyToken,ordersCtrl.createOrder) //SE CREAN EN COMPRAS.CONTROLLER//
+router.put('/:id', verifyToken, ordersCtrl.updateOrderById)
+router.delete('/:id', verifyToken,ordersCtrl.deleteOrderById)
 
 
 //EXPORT MODULE
