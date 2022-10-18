@@ -20,7 +20,7 @@ exports.create = asyncHandler(async function (request, response) {
   let amount = +request.query.amount
   let costoenviame = +request.query.costoenviame
 
-  // let returnUrl = request.protocol + "s://" + request.get("host") + "/api/webpay_plus/commit";
+   //let returnUrl = request.protocol + "s://" + request.get("host") + "/api/webpay_plus/commit";
   let returnUrl = request.protocol + "://" + request.get("host") + "/api/webpay_plus/commit";
 
 

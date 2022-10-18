@@ -11,8 +11,7 @@ const cors = require('cors')
 app.use(cors(corsOptions));
 
 const optionsServer = {
-    // key: fs.readFileSync('/etc/letsencrypt/live/www.patronatotelas.cl/privkey.pem'),
-    // cert: fs.readFileSync('/etc/letsencrypt/live/www.patronatotelas.cl/cert.pem'),
+
     requestCert: false,
     rejectUnauthorized: false
     ,

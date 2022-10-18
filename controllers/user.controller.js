@@ -36,7 +36,7 @@ exports.confirm = async (req, res) => {
 
 
         // Redireccionar a la confirmación
-        res.redirect('/confirm.html')
+        res.redirect('/api/confirm.html')
 
         return
 

@@ -35,14 +35,12 @@ const sendEmail = async (email, subject, html) => {
     }
 }
 
-const URL= process.env.URL
-
 const getTemplate = (email, token) => {
     return `
         <div>           
             <h2>Hola ${email}</h2>
             <p>Para confirmar tu cuenta, click al siguiente enlace</p>
-                <a href="${URL}/auth/confirm/${token}"
+                <a href="${process.env.URL}/auth/confirm/${token}"
                      target="_blank">
                         Confirmar Cuenta
                  </a>
