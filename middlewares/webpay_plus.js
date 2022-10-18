@@ -55,6 +55,7 @@ const commit = async (request, response, next) => {
     }
 
     next();
+    return
 
   } else if (!token && !tbkToken) {//Flujo 2
     io.emit('anuladotiempoespera', JSON.stringify(viewData));

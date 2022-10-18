@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const urlEmail = process.env.URL_EMAIL_CONFIRM
 
 const mail = {
     user: 'info@patronatotelas.cl',
@@ -34,13 +35,12 @@ const sendEmail = async (email, subject, html) => {
         console.log('Algo no va bien con el email', error);
     }
 }
-
 const getTemplate = (email, token) => {
     return `
         <div>           
             <h2>Hola ${email}</h2>
-            <p>Para confirmar tu cuenta, click al siguiente enlace</p>
-                <a href="${process.env.URL}/auth/confirm/${token}"
+            <p>Para confirmar su cuenta, click al siguiente enlace</p>
+                <a href="${urlEmail}/auth/confirm/${token}"
                      target="_blank">
                         Confirmar Cuenta
                  </a>

@@ -254,12 +254,7 @@ const guardarCompraTBK = async (req, res, next) => {
     }else{
         next()
     }
-
-   
-
 };
-
-
 
 //CONSULTAR SI EXISTE EL EMAIL EN BD SQLITE
 const findUserByEmail = async (req, res, next) => {
@@ -288,9 +283,6 @@ const findUserByEmail = async (req, res, next) => {
     next()
 
 };
-
-
-
 module.exports = {
     findUserByEmail,
     guardarCompraTBK

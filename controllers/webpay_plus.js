@@ -3,10 +3,15 @@ const asyncHandler = require("../utils/async_handler");
 const moment = require('moment-timezone');
 moment.tz("America/Santiago").format();
 const User = require('../models/users')
+require('dotenv').config();
+
+const url_return_s = process.env.URL_RETURN_S // 's://' para prod o '://' para dev
+
+
 //CREAR transaccion y enviar a webpay**-----------------------------------
 
 exports.create = asyncHandler(async function (request, response) {
-  console.log("comienzo del create", request.body, request.query, request.params)
+  console.log("controller-webpay: create line 14: comienzo del create de request.query:=> ", request.query)
   // console.log("el req para crear transaccion trae: ", request)
 
   let fechaActual = Date.now();
@@ -20,9 +25,7 @@ exports.create = asyncHandler(async function (request, response) {
   let amount = +request.query.amount
   let costoenviame = +request.query.costoenviame
 
-   //let returnUrl = request.protocol + "s://" + request.get("host") + "/api/webpay_plus/commit";
-  let returnUrl = request.protocol + "://" + request.get("host") + "/api/webpay_plus/commit";
-
+  let returnUrl = request.protocol + url_return_s + request.get("host") + "/api/webpay_plus/commit";
 
   const createResponse = await (new WebpayPlus.Transaction()).create(
     buyOrder,
@@ -34,7 +37,7 @@ exports.create = asyncHandler(async function (request, response) {
   let token = createResponse.token;
   let url = createResponse.url;
 
-  console.log("el token webpay creado es: ", token)
+  console.log("controller-webpay: create line  42: el token webpay creado es: ", token)
   await User.update(
     {
       socketId: socketId,

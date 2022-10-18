@@ -12,7 +12,7 @@ const { Op } = require('sequelize');
 exports.getCompra = async (req, res) => {
 
     email = req.body.email;
-    
+
     const compras = await Carrito.findAndCountAll({
         order: [['sesion', 'desc']],
         where: { cliente: email, ordenPedido: { [Op.ne]: '' } }
@@ -25,9 +25,7 @@ exports.getCompra = async (req, res) => {
 //Crear compra
 
 exports.createCompra = async (req, res) => {
-
-    console.log("CREATEcOMPRA REQ,BODY:", req.body)
-
+    console.log("compras.controller-createCompra function start")
     var tiendaId = null;
     var quienRetiraId = null;
     var quienRecibeId = null;
@@ -48,26 +46,24 @@ exports.createCompra = async (req, res) => {
         console.log("tipodoc 2 es FACTURA")
         tipoDatosFAId = +req.body.detalleCompra.tipoDatosFA
     };
-
-   
     //   
     var tipoEntregaId = +req.body.detalleCompra.tipoEntrega
 
     if (tipoEntregaId == 2) {//ENVIAME
-
+        console.log("tipo enviame")
         const datosEnviame = await RespuestaEnviame.findAll(
             {
                 raw: true,
                 where: { imported_id: ordenPedido }
             }
-        );    
+        );
 
         OT = datosEnviame[0].tracking_number;
         status_name = datosEnviame[0].status_name;
         status_code = datosEnviame[0].status_code;
         quienRecibeId = +req.body.detalleCompra.quienRecibe
 
-    } 
+    }
 
 
 
@@ -76,7 +72,7 @@ exports.createCompra = async (req, res) => {
         tiendaId = +req.body.detalleCompra.tienda
         quienRetiraId = +req.body.detalleCompra.quienRetira
 
-    }  else if (tipoEntregaId == 3) {
+    } else if (tipoEntregaId == 3) {
         console.log("envio por pagar")
         // quienRecibeId = +req.body.detalleCompra.quienRecibe
     };
