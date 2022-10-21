@@ -5,6 +5,8 @@ moment.tz("America/Santiago").format();
 const User = require('../models/users')
 require('dotenv').config();
 
+var { io } = require('../index.js')
+
 const url_return_s = process.env.URL_RETURN_S // 's://' para prod o '://' para dev
 
 
@@ -38,6 +40,7 @@ exports.create = asyncHandler(async function (request, response) {
   let url = createResponse.url;
 
   console.log("controller-webpay: create line  42: el token webpay creado es: ", token)
+
   await User.update(
     {
       socketId: socketId,
@@ -45,7 +48,7 @@ exports.create = asyncHandler(async function (request, response) {
     },
     { where: { token: tokenLstrg } }
   )
-
+  console.log("se agrega a USER el socketId y token_ws creados")
 
   let viewData = {
     costoenviame,
@@ -56,12 +59,88 @@ exports.create = asyncHandler(async function (request, response) {
     token,
     url,
   };
-  response.status(200).json(viewData)//ok
+  response.status(200).json(viewData)//se reenvia al front y este crea un form automatico que tiene el token creado por tbk
+
 });
 
 exports.commit = async (request, response) => {
+  console.log("webpay controller, funcion export.commit aqui, inicio, debe renderizar aviso-ok", request)
 
-  response.render("webpay_plus/aviso-ok")
+  //Flujos:
+  //1. Flujo normal (OK): solo llega token_ws
+  //2. Timeout (más de 10 minutos en el formulario de Transbank): llegan TBK_ID_SESION y TBK_ORDEN_COMPRA
+  //3. Pago abortado (con botón anular compra en el formulario de Webpay): llegan TBK_TOKEN, TBK_ID_SESION, TBK_ORDEN_COMPRA
+  //4. Caso atipico: llega todos token_ws, TBK_TOKEN, TBK_ID_SESION, TBK_ORDEN_COMPRA
+
+
+  let params = request.method === 'GET' ? request.query : request.body;
+  let token = params.token_ws;
+  let tbkToken = params.TBK_TOKEN;
+  let tbkOrdenCompra = params.TBK_ORDEN_COMPRA;
+  let tbkIdSesion = params.TBK_ID_SESION;
+
+  let viewData = {
+    token,
+    tbkToken,
+    tbkOrdenCompra,
+    tbkIdSesion
+  };
+
+  if (token && !tbkToken) {//Flujo 1    
+
+    console.log("Fujo 1, se hará la transaccion COMMIT EN MIDDLWARE  WEBPAYPLUS")
+
+    const commitResponse = await (new WebpayPlus.Transaction()).commit(token);
+
+    viewData = {
+      token,
+      commitResponse,
+    };
+
+    console.log("la respuesta del commitResponse es: ", commitResponse)
+
+    if (commitResponse.response_code == 0) {
+      console.log("AUTHORIZED ok 0, commitResponse.response_code == 0");
+      try {
+        const user = await User.findAll({
+          raw: true,
+          where: { token_ws: token }
+        });
+
+        const socketId = user[0].socketId;
+
+        io.to(socketId).emit('pagar', JSON.stringify(viewData));
+        //io.emit('pagar', JSON.stringify(viewData));
+
+      } catch (error) {
+        console.log("fallo el emit del midlw")
+      }
+
+    }
+
+
+    response.render("webpay_plus/aviso-ok")
+
+    return;
+
+
+  } else if (!token && !tbkToken) {//Flujo 2
+    io.emit('anuladotiempoespera', JSON.stringify(viewData));
+    // step = "El pago fue anulado por tiempo de espera.";
+    // stepDescription = "En este paso luego de anulación por tiempo de espera (+10 minutos) no es necesario realizar la confirmación ";
+  } else if (!token && tbkToken) {//Flujo 3
+    io.emit('anuladoporusuario', JSON.stringify(viewData));
+    // step = "El pago fue anulado por el usuario.";
+    // stepDescription = "En este paso luego de abandonar el formulario no es necesario realizar la confirmación ";
+  } else if (token && tbkToken) {//Flujo 4
+    io.emit('pagoinvalido', JSON.stringify(viewData));
+    // step = "El pago es inválido.";
+    // stepDescription = "En este paso luego de abandonar el formulario no es necesario realizar la confirmación ";
+  }
+
+  console.log("NO se hizo el pago, ya que no es respuesta '0', esto no deberia aparecer si la respuesta es 0")
+  response.render("webpay_plus/commit-error");
+
 }
 
 

@@ -139,6 +139,7 @@ exports.createCompra = async (req, res) => {
         }
     )
 
-    res.status(200).json({ message: 'ok' });
+    // res.status(200).json({datosCompra: req.body.datosCompra, detalleCompra: req.body.detalleCompra });
+    res.status(200).json({datosCompra: req.body.datosCompra });
 
 }

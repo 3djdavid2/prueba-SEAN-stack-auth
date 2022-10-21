@@ -1,8 +1,9 @@
 var express = require("express");
 var router = express.Router();
+require('dotenv').config();
 const WebpayPlus = require("transbank-sdk").WebpayPlus;
 var webpayPlusController = require("../controllers/webpay_plus");
-var  {commit} = require("../middlewares/webpay_plus");
+
 
 router.use(function (req, res, next) {
 
@@ -16,7 +17,7 @@ router.use(function (req, res, next) {
 
 
 router.get("/create", webpayPlusController.create);
-router.get("/commit", commit, webpayPlusController.commit);
+router.get("/commit",  webpayPlusController.commit);
 router.post("/commit", webpayPlusController.commit);
 router.post("/status", webpayPlusController.status);
 router.post("/refund", webpayPlusController.refund);
