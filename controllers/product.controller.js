@@ -3,6 +3,25 @@
 const Product = require('../models/products')
 const { Op } = require('sequelize');
 
+//Obtener listado de algunos productos por categoria/familia
+exports.getByCategory = async (req, res) => {
+
+    id = req.params.id
+
+    const products = await Product.findAndCountAll(
+        {
+            where: {
+                categoriaId: id
+            },
+            include: {
+                all: true
+            },
+        }
+
+    );
+
+    res.json(products);
+}
 
 //Devuelve la cantidad total de productos, ej: 100
 exports.getProductsCount = async (req, res) => {
@@ -36,9 +55,15 @@ exports.getProductsByPage = async (req, res) => {
 exports.findByNameProduct = async (req, res) => {
 
     const value = req.params.value;
-    const product = await Product.findAndCountAll({
-        where: { descripcion: { [Op.substring]: value } },
-    });
+
+    const product = await Product.findAndCountAll(
+        {
+            where: {
+                descripcion: { [Op.substring]: value }
+            },
+            include: { all: true }
+        }
+    );
 
     res.status(200).json(product)
 }

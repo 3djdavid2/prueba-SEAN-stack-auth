@@ -23,19 +23,22 @@ const optionsServer = {
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, optionsServer);
+exports.io = io;
 
 var cookieParser = require("cookie-parser");
 const morgan = require('morgan')
-
 const path = require('path');
 
 var favicon = require("serve-favicon");
 const fs = require('fs')
 
+const port = process.env.PORT
+
 //sequelize ORM
 const sequelize = require('./database.js');
 
-const { createRoles,
+const {
+    createRoles,
     createTipoDocTributario,
     createTipoDatosFA,
     createTipoEntrega,
@@ -49,17 +52,15 @@ const { Marca } = require('./models/marca')
 const { Categoria } = require('./models/categoria')
 const { DireccionesClientes } = require('./models/direccionesCliente')
 const { Tiendas } = require('./models/tiendas')
-
 const { OrdenEnviame } = require('./models/ordenEnviame')
 const { RespuestaEnviame } = require('./models/respEnviame')
 const { RespuestaTBK } = require('./models/respTBK')
-
 const { Orden } = require('./models/orden')
 const { Pago } = require('./models/pago')
 const { Pack } = require('./models/packs')
 const { PackMix } = require('./models/packs-mix')
+const { Banner } = require('./models/banner')
 
-const port = process.env.PORT
 
 sequelize.sync().then(() => console.log('db is ready'));
 //force true elimina las celdas con informacion, no usar en production!!!!!
@@ -71,6 +72,7 @@ app.use(bodyParser.json())
 app.use(express.json());
 app.use(cookieParser());
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
+app.use(morgan('dev'));
 
 //************************************************************** */SOCKET WEBPAY PLUS****
 
@@ -84,10 +86,7 @@ app.use((req, res, next) => {
 });
 
 
-exports.io = io;
-
-
-//************************************* */
+//*************** */
 createRoles();
 createTipoDocTributario()
 createTipoDatosFA()
@@ -109,19 +108,18 @@ Orden
 Pago
 Pack
 PackMix
+Banner
 
-app.use(morgan('dev'));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-
 app.use('/uploads', express.static(path.resolve('uploads')));
-// app.use(express.static('./public'));
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/", require('./routes/index'));
 app.use('/api/webpay_plus', require('./routes/webpay_plus'));
+
 //todas las rutas empiezan con auth o product
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/carrito', require('./routes/carrito'))
@@ -139,8 +137,9 @@ app.use('/api/pack', require('./routes/pack'))
 app.use('/api/sucursales', require('./routes/sucursales'))
 app.use('/api/transferencia', require('./routes/transferencia'))
 app.use('/api/cotizarDomicilio', require('./routes/cotizarDomicilio'))
+app.use('/api/banner', require('./routes/banner'))
 
-//CONECTION SOCKET ***********************************************************************
+//CONECTION SOCKET INICIO ***********************************************************************
 
 io.on('connection', (socket) => {
     console.log("conectado a socket patronato telas=> handshake: ", socket.id)
@@ -152,8 +151,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', function () {
         console.log('user disconnected', socket.id);
     });
-
-})
+});
 
 var socketMap = [];
 // SocketSingleton.on('connection', (socket) => {
@@ -251,19 +249,17 @@ app.put('/api/precio', async (req, res) => {
         res.status(400).send(err);
     }
 });
-
-//todo
 async function precioUpdate(newPrecio) {
-    for (let socketMapObj of socketMap) {    
+    for (let socketMapObj of socketMap) {
         socketMapObj.emit('actualizaPrecio', newPrecio);
     }
-}
+};
 
+//CONECTION SOCKET FIN  ***********************************************************************
 
 server.listen(port, () => {
     console.log("socket y server listos y escuchando por el puerto", port)
-})
+});
 
 
-
-module.exports = app
+module.exports = app;

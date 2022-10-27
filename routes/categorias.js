@@ -9,7 +9,7 @@ const verifyToken = require('../middlewares/verifyToken')
 
 //ROUTER
 
-router.get('/', verifyToken, categorias.getCategorias)
+router.get('/', categorias.getCategorias)
 router.post('/', verifyToken, categorias.createCategoria)
 router.put('/:id', verifyToken, categorias.updateCategoria)
 router.delete('/:id', verifyToken, categorias.deleteCategoria)

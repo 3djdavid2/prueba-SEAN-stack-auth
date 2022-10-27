@@ -9,6 +9,8 @@ const productsCtrl = require('../controllers/product.controller')
 //ROUTER
 
 
+router.get('/category/:id', productsCtrl.getByCategory)
+//
 router.get('/', productsCtrl.getProductsByPage)
 router.get('/busca/:value', productsCtrl.findByNameProduct)
 router.get('/count', productsCtrl.getProductsCount)

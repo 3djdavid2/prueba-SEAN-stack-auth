@@ -24,6 +24,9 @@ exports.createRoles = async () => {
             }),
             Role.create({
                 name: "client"
+            }),
+            Role.create({
+                name: 'store'
             })
         ])
 

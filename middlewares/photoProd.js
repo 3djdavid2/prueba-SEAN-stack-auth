@@ -8,10 +8,31 @@ const s3 = new Aws.S3({
 })
 
 
-const uploadPhoto = async (req, res, next) => {
-   
+const deletePhoto = async (req, res, next) => {
+
+    const photoKey = req.params.name
+
+    s3.deleteObject({ Key: photoKey, Bucket: process.env.AWS_BUCKET_NAME }, (err, data) => {
+
+        console.log("la data al borrar desde aws s3 es: ", data)
+
+        if (err) {
+            // return alert("There was an error deleting your photo: ", err.message);
+            console.log("error al borrar en aws s3", err)
+        }
+        // alert("Successfully deleted photo.");
+
+        next()
+
+    })
+}
+
+
+const uploadPhoto = (req, res, next) => {
+
     try {
-        if (req.body.updatePhoto == 'false') {
+        
+        if (req.body.updatePhoto == 'false' || req.body.updatePhoto === false) {
             console.log("req.body.updatePhoto == 'false', (no existe file de imagen para update)")
             req.body.Location = ''
             next();
@@ -23,10 +44,9 @@ const uploadPhoto = async (req, res, next) => {
                 ContentType: req.file.mimetype           // Necessary to define the image content-type to view the photo in the browser with the link
             };
 
-
             s3.upload(params).promise()
                 .then((resp) => {
-                 
+
                     req.body.Location = resp.Location
                     next()
 
@@ -47,6 +67,7 @@ const uploadPhoto = async (req, res, next) => {
 
 
 module.exports = {
+    deletePhoto,
     uploadPhoto
 };
 
