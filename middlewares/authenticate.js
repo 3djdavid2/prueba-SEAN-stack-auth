@@ -80,10 +80,7 @@ const verifyEmailyPassword = async (req, res, next) => {
         //Aviso al cliente que se le ha enviado un correo con link para confirmacion
         return res.json({ token: 'tomailconfirm' })
 
-
     }
-
-
 
     next();
 

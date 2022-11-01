@@ -255,6 +255,24 @@ async function precioUpdate(newPrecio) {
     }
 };
 
+app.put('/api/estado', async (req, res) => {
+
+    try {
+        let newEstado = (req.body.newEstado);
+        precioUpdate(newEstado);
+        res.status(201).json(newEstado);
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+});
+async function precioUpdate(newEstado) {
+    for (let socketMapObj of socketMap) {
+        socketMapObj.emit('actualizaEstadoPedido', newEstado);
+    }
+};
+
 //CONECTION SOCKET FIN  ***********************************************************************
 
 server.listen(port, () => {

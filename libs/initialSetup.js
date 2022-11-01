@@ -165,23 +165,18 @@ exports.createEstadoPedido = async () => {
 
         await Promise.all([
             EstadoPedido.create({
-                name: 'listoparadespacho',
+                name: 'Preparación de Pedido',
             }),
             EstadoPedido.create({
-                name: 'enviado'
+                name: 'Listo para retiro'
             }),
             EstadoPedido.create({
                 name: "entregado"
             }),
             EstadoPedido.create({
-                name: 'rechazado',
+                name: 'rechazado'
             }),
-            EstadoPedido.create({
-                name: 'pendiente'
-            }),
-            EstadoPedido.create({
-                name: "cancelado"
-            })
+         
         ])
 
 
