@@ -9,6 +9,10 @@ User.init({
         autoIncrement:true,
         primaryKey:true
     },
+    estadoSocket:{
+        type: DataTypes.STRING,
+        defaultValue: 'desconectado'
+    },
     socketId:{
         type: DataTypes.STRING
     },

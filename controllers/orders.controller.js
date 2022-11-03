@@ -1,6 +1,7 @@
 //packs
 const Ordenes = require('../models/orden')
-const EstadoPedido = require('../models/estadoPedido')
+const EstadoPedido = require('../models/estadoPedido');
+const Tiendas = require('../models/tiendas');
 
 //Obtener listado de packs por id ACTIVO O INACTIVO
 exports.getOrderById = async (req, res) => {
@@ -18,16 +19,24 @@ exports.getOrderById = async (req, res) => {
 }
 
 
-//Obtener todos los packs ACTIVOS O INACTIVOS asi los puedo activar desde admin.
-exports.getOrders = async (req, res) => {
+//
+exports.getOrders = async (req, res) => { 
 
     email = req.body.email
     role = req.body.role
 
+    //tiendaId
+    const tienda = await Tiendas.findOne({
+        raw:true,
+        where: { email}
+    })
+
+   
+
     if (role == 'store') {
 
         var finded = await Ordenes.findAll({
-            where: {email},
+            where: {tiendaId: tienda.id},
             include: {
                 all: true
             }
@@ -61,7 +70,6 @@ exports.getOrders = async (req, res) => {
 
 exports.updateOrderById = async (req, res) => {
 
-    console.log("update order req.body here: ", req.body)
 
     const {
 

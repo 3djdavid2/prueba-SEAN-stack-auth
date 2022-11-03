@@ -1,9 +1,6 @@
 require('dotenv').config();
 var axios = require('axios');
 
-// const moment = require('moment-timezone');
-// moment.tz("America/Santiago").format();
-
 const User = require('../models/users')
 const DireccionesClientes = require('../models/direccionesCliente');
 const OrdenEnviame = require('../models/ordenEnviame');
@@ -13,12 +10,20 @@ const RespuestaEnviame = require('../models/respEnviame');
 
 const guardarCompraTBK = async (req, res, next) => {
 
-    const { name, phone, email } = req.body
-    const { dimensions, DomicilioId, totalaPagar, tipoEntrega } = req.body.detalleCompra
+    const {
+         name, phone, email
+         } = req.body
+    const {
+        dimensions, DomicilioId, totalaPagar, tipoEntrega
+    } = req.body.detalleCompra
 
     const socketId = req.body.datosCompra.socketId;
     const tokenTBK = req.body.datosCompra.token;
-    const { vci, amount, status, buy_order, session_id, card_detail, accounting_date, transaction_date, authorization_code, payment_type_code, response_code, installments_number } = req.body.datosCompra.commitResponse
+    const {
+        vci, amount, status, buy_order, session_id, card_detail,
+        accounting_date, transaction_date, authorization_code, payment_type_code,
+        response_code, installments_number
+    } = req.body.datosCompra.commitResponse
 
     //guardar datos de la transaccion de transbank en bd:
     await RespuestaTBK.create(
@@ -171,7 +176,7 @@ const guardarCompraTBK = async (req, res, next) => {
                     'Content-Type': 'Application/json'
                 },
                 data: data
-            };   
+            };
 
             //peticion post hacia enviame para generar el envio en su plataforma (el envio se debe revisar de todas maneras)
             axios(config)
@@ -246,12 +251,12 @@ const guardarCompraTBK = async (req, res, next) => {
                     console.log("error en axios", error);
                     next()
                 });
-        }else{
+        } else {
             console.log("enviame es cobro 0, algo esta mal")
             next();
-        }      
+        }
 
-    }else{
+    } else {
         next()
     }
 };

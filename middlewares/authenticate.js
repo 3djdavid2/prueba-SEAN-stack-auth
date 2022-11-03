@@ -7,9 +7,12 @@ const { getTemplate, sendEmail } = require('../config/mail.config');
 
 const verifyEmailyPassword = async (req, res, next) => {
 
+    socketId = req.body.socketId
     emailF = req.body.email
     passwordF = req.body.password
+
     clicksignin = req.headers.clicksignin //true
+
     const user = await consultarBD(emailF);
 
     //SI EXISTE usuario:
@@ -26,9 +29,11 @@ const verifyEmailyPassword = async (req, res, next) => {
                 //GENERO TOKEN
                 const token = createToken(emailF, user.role);
                 req.body.token = token
-                
+
                 //Guardo token en bd 
-                await saveTokenBD(emailF,token);
+                await saveTokenBD(emailF, token, socketId);
+
+
 
                 //VERIFICO si existe verificado de email anterior en BD:
                 const verificacion = user.statusEmail;
@@ -69,8 +74,9 @@ const verifyEmailyPassword = async (req, res, next) => {
         await registrarBD(req.body);
         //genera TOKEN
         token = createToken(emailF)
-        //Guardo token en bd 
-        await saveTokenBD(emailF,token);
+
+        //Guardo token y socket en bd ***-*-*-*-*-*-*-*-*socket
+        await saveTokenBD(emailF, token, socketId);
 
         //Envia token y link al correo del cliente:
         const template = getTemplate(emailF, token);

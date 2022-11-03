@@ -67,7 +67,10 @@ sequelize.sync().then(() => console.log('db is ready'));
 // sequelize.sync({force:true}).then(() => console.log('db is ready'));
 
 //para que re.body no entregue Undefined como respuesta del post solicitado
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const User = require('./models/users.js');
+const Ordenes = require('./models/orden');
+const Carrito = require('./models/carrito.js');
 app.use(bodyParser.json())
 app.use(express.json());
 app.use(cookieParser());
@@ -142,18 +145,24 @@ app.use('/api/banner', require('./routes/banner'))
 //CONECTION SOCKET INICIO ***********************************************************************
 
 io.on('connection', (socket) => {
-    console.log("conectado a socket patronato telas=> handshake: ", socket.id)
+
+    let { payload, tokenValido } = socket.handshake.query;
 
     socketMap.push(socket);
     socket.emit('test', { "id": socket.id })
 
     // * Si un dispositivo se desconecto lo detectamos aqui
-    socket.on('disconnect', function () {
+    socket.on('disconnect', async function () {
         console.log('user disconnected', socket.id);
+        const user = await User.update(
+            { estadoSocket: 'desconectado' },
+            { where: { socketId: socket.id } }
+        )
     });
 });
 
 var socketMap = [];
+
 // SocketSingleton.on('connection', (socket) => {
 
 //     //** handshake: Es el id de conexion con el dispositivo cliente */
@@ -237,7 +246,10 @@ var socketMap = [];
 
 //todo revisar permiso solo de asdmmin
 //ENDPOINT admin angular post service perfil
+
 app.put('/api/precio', async (req, res) => {
+
+
 
     try {
         let newPrecio = (req.body.newPrecio);
@@ -257,9 +269,37 @@ async function precioUpdate(newPrecio) {
 
 app.put('/api/estado', async (req, res) => {
 
+    const { orden, newEstado, email } = req.body
+    //actualizar ordens por numero de orden
+    const ordenes = await Ordenes.update(
+        {
+            status_name: newEstado
+        },
+        { where: { orden: orden } }
+    )
+
+    // console.log("result del update de orden a status_name:>", ordenes[0]) //da resultado 1
+
+    //actualizar carrito por orden su estado para que lo vea el cliente
+    const carrito = await Carrito.update(
+        {estado: newEstado},
+        {where:{ordenPedido: orden}}
+    )
+
+    console.log("carrito update estado orden:>", carrito[0])
+
+    //buscar socketid por email
+    const user = await User.findOne(
+        {
+            raw: true,
+            where: { email }
+        }
+    );
+
+    const { socketId, estadoSocket } = user
+
     try {
-        let newEstado = (req.body.newEstado);
-        precioUpdate(newEstado);
+        estadoUpdate(socketId, newEstado, orden);
         res.status(201).json(newEstado);
 
     } catch (err) {
@@ -267,10 +307,9 @@ app.put('/api/estado', async (req, res) => {
         res.status(400).send(err);
     }
 });
-async function precioUpdate(newEstado) {
-    for (let socketMapObj of socketMap) {
-        socketMapObj.emit('actualizaEstadoPedido', newEstado);
-    }
+
+async function estadoUpdate(socketId, newEstado, orden) {
+    io.to(socketId).emit('actualizaEstadoPedido', [{ newEstado: newEstado, orden: orden }]);
 };
 
 //CONECTION SOCKET FIN  ***********************************************************************
@@ -278,6 +317,5 @@ async function precioUpdate(newEstado) {
 server.listen(port, () => {
     console.log("socket y server listos y escuchando por el puerto", port)
 });
-
 
 module.exports = app;

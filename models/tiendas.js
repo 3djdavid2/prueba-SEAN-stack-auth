@@ -9,6 +9,12 @@ Tiendas.init({
         autoIncrement: true,
         primaryKey: true
     },
+    email: {
+        type: DataTypes.STRING
+    },
+    estado: {
+        type: DataTypes.BOOLEAN
+    },
     nombre: {
         type: DataTypes.STRING
     },
@@ -21,6 +27,12 @@ Tiendas.init({
     direccion: {
         type: DataTypes.STRING
     },
+    telefono: {
+        type: DataTypes.STRING
+    },
+    encargado: {
+        type: DataTypes.STRING
+    },
     lugar: {
         type: DataTypes.STRING
     },
@@ -31,15 +43,6 @@ Tiendas.init({
         type: DataTypes.STRING
     },
 
-    telefono: {
-        type: DataTypes.STRING
-    },
-    encargado: {
-        type: DataTypes.STRING
-    },
-    estado: {
-        type: DataTypes.BOOLEAN
-    }
 }, {
     sequelize,
     modelName: 'tiendas'
