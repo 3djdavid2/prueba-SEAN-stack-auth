@@ -15,7 +15,7 @@ const verifyToken = async (req, res, next) => {
         }
 
         const payload = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        console.log("token ok")
+     
         req.body.email = payload._id;
         req.body.role = payload.role;
 

@@ -26,8 +26,7 @@ const saveTokenBD = async (email, token, socketId) => {
 const registrarBD = async (datos) => {
 
     const passwordE = await encriptarPass(datos.password)
-    // const fecha = new Date()
-
+   
     const usuario = await User.create({
         email: datos.email,
         password: passwordE

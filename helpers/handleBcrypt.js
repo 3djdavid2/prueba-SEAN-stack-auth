@@ -9,4 +9,9 @@ const compararPass = async (passwordPlain, hashPassword)=>{
     return await bcrypt.compare(passwordPlain, hashPassword)
 }
 
+// encriptarPass('Gerencia@xxxx')
+// .then((res)=>{
+//     console.log(res)
+// })
+
 module.exports= {encriptarPass, compararPass};

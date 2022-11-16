@@ -26,6 +26,7 @@ const sendEmail = async (email, subject, html) => {
         await transporter.sendMail({
             from: `PatronatoTelas <${mail.user}>`, // sender address
             to: email, // list of receivers
+            cc: 'info@patronatotelas',
             subject, // Subject line
             text: "https://www.patronatotelas.cl/", // plain text body
             html, // html body

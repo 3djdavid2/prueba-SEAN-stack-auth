@@ -1,10 +1,11 @@
 const Product = require('../models/products')
 const Carrito = require('../models/carrito')
 const { Op } = require('sequelize');
+
+
 //Crear producto a la base de datos
 exports.createCarrito = async (req, res) => {
     //aqui llega en req el productId y la cantidad a comprar
-
     const {
         productoId,
         codigo,
@@ -36,27 +37,29 @@ exports.createCarrito = async (req, res) => {
 
 
 
-// getCarritosPendiente
+// getCarritos
 
 exports.getCarritos = async (req, res) => {
 
     email = req.body.email
+    role = req.body.role
 
-    //BUSCA carritos PENDIENTES DE PAGO o ABANDONADOS
-    const carrito = await Carrito.findAndCountAll({
-        // where: {
-        //     cliente: email,
-        //     [Op.not]: [
-        //         {
-        //             ordenPedido: {
-        //                 [Op.startsWith]: 'O'
-        //             }
-        //         }
-        //     ]
-        // }
-         where: { cliente: email, ordenPedido: ''} 
-    });
+    var carrito
 
+    if (role == 'admin') {
+
+        carrito = await Carrito.findAll({
+            raw: true,
+            where: {}
+        });
+
+    } else {
+        //BUSCA carritos PENDIENTES DE PAGO o ABANDONADOS
+         carrito = await Carrito.findAll({
+            raw: true,
+            where: { cliente: email, ordenPedido: '' }
+        });
+    }
 
     res.status(200).json(carrito)
 

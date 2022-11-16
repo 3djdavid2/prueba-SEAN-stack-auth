@@ -10,7 +10,6 @@ const verifyEmailyPassword = async (req, res, next) => {
     socketId = req.body.socketId
     emailF = req.body.email
     passwordF = req.body.password
-
     clicksignin = req.headers.clicksignin //true
 
     const user = await consultarBD(emailF);

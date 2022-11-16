@@ -5,6 +5,9 @@ const Carrito = require('../models/carrito');
 const RespuestaEnviame = require('../models/respEnviame');
 const TipoEntrega = require('../models/tipoEntrega');
 const { Op } = require('sequelize');
+const User = require('../models/users');
+const { sendEmailStore } = require('../config/mail.store');
+const Tiendas = require('../models/tiendas');
 
 
 //Obtener listado de compras con orden pagadas //QUE NO SEAN VACIAS=> [Op.ne]: ''
@@ -25,7 +28,7 @@ exports.getCompra = async (req, res) => {
 //Crear compra
 
 exports.createCompra = async (req, res) => {
-    console.log("compras.controller-createCompra function start")
+
     var tiendaId = null;
     var quienRetiraId = null;
     var quienRecibeId = null;
@@ -40,11 +43,50 @@ exports.createCompra = async (req, res) => {
     var ordenPedido = req.body.datosCompra.commitResponse.buy_order
     const { email } = req.body
 
+    const avisoFactura = async (dataFA) => {
+
+        const user = await User.findOne(
+
+            {
+                raw: true,
+                where: { email: dataFA.email }
+            }
+        );
+
+
+        //productos y detalle para su factura
+        const carrito = await Carrito.findAll(
+            {
+                raw: true,
+                where: { ordenPedido: dataFA.datosCompra.commitResponse.buy_order }
+            }
+        )
+
+        const dataFAfinal = { dataFA, user, carrito: carrito[0] }
+
+        //buscar email tienda por id
+        const tienda = await Tiendas.findOne(
+            {
+                raw: true,
+                where: { id: +dataFA.detalleCompra.tienda }
+            }
+        )
+
+        const fromEmailTienda = tienda.email
+
+        //envio mail a facturacion, Dieter, Gestion, etc.
+        await sendEmailStore(fromEmailTienda, `Factura tienda ${tienda.nombre}`, dataFAfinal);
+
+    }
+
     //documento tributario*-*-*-
     var tipoDocId = +req.body.detalleCompra.tipoDoc
     if (tipoDocId == 2) {
         console.log("tipodoc 2 es FACTURA")
         tipoDatosFAId = +req.body.detalleCompra.tipoDatosFA
+
+        // enviar correo a dieter para hacer la factura
+        avisoFactura(req.body)
     };
     //   
     var tipoEntregaId = +req.body.detalleCompra.tipoEntrega
@@ -140,6 +182,6 @@ exports.createCompra = async (req, res) => {
     )
 
     // res.status(200).json({datosCompra: req.body.datosCompra, detalleCompra: req.body.detalleCompra });
-    res.status(200).json({datosCompra: req.body.datosCompra });
+    res.status(200).json({ datosCompra: req.body.datosCompra });
 
 }

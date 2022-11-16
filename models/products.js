@@ -5,11 +5,23 @@ const Categoria = require('./categoria')
 
 
 const Product = sequelize.define('product', {
-
+    
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
+    },
+    codigo: {
+        type: DataTypes.NUMBER
+    },
+    nombre: {
+        type: DataTypes.STRING
+    },
+    precio: {
+        type: DataTypes.NUMBER
+    },
+    descuento: {
+        type: DataTypes.NUMBER
     },
     estado: {
         type: DataTypes.INTEGER,
@@ -23,9 +35,7 @@ const Product = sequelize.define('product', {
         type: DataTypes.INTEGER,
         defaultValue: 1
     },
-    nombre: {
-        type: DataTypes.STRING
-    },
+    
     categoriaId: {
         type: DataTypes.INTEGER
     },
@@ -38,12 +48,7 @@ const Product = sequelize.define('product', {
     imgURL: {
         type: DataTypes.STRING
     },
-    codigo: {
-        type: DataTypes.NUMBER
-    },
-    precio: {
-        type: DataTypes.NUMBER
-    },
+   
     precioPromo: {
         type: DataTypes.NUMBER
     },

@@ -48,7 +48,7 @@ Carrito.init({
 }, {
     sequelize,
 
-    modelName: 'carrito'
+    modelName: 'carritos'
 })
 
 module.exports = Carrito;
