@@ -124,6 +124,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/api/webpay_plus', require('./routes/webpay_plus'));
 
 //todas las rutas empiezan con auth o product
+app.use('/api/users', require('./routes/users'))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/carrito', require('./routes/carrito'))
 app.use('/api/compras', require('./routes/compras'))
