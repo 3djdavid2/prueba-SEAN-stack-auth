@@ -44,22 +44,12 @@ exports.getCarritos = async (req, res) => {
     email = req.body.email
     role = req.body.role
 
-    var carrito
+    //BUSCA carritos PENDIENTES DE PAGO o ABANDONADOS
+    const carrito = await Carrito.findAll({
+        raw: true,
+        where: { cliente: email, ordenPedido: '' }
+    });
 
-    if (role == 'admin') {
-
-        carrito = await Carrito.findAll({
-            raw: true,
-            where: {}
-        });
-
-    } else {
-        //BUSCA carritos PENDIENTES DE PAGO o ABANDONADOS
-         carrito = await Carrito.findAll({
-            raw: true,
-            where: { cliente: email, ordenPedido: '' }
-        });
-    }
 
     res.status(200).json(carrito)
 
@@ -72,7 +62,7 @@ exports.getCarritoByOrder = async (req, res) => {
     const ordenPedido = req.params.id;
     const carrito = await Carrito.findAll({
         where: {
-            ordenPedido
+            ordenPedido: ordenPedido
         }
     });
     res.status(200).json(carrito)
@@ -96,7 +86,7 @@ exports.updateCarrito = async (req, res) => {
             total: total
 
         },
-        { where: { id } }
+        { where: { id: id } }
     );
 
     res.status(200).json(carrito)
@@ -111,7 +101,7 @@ exports.deleteCarrito = async (req, res) => {
 
     const carrito = await Carrito.destroy(
         {
-            where: { id }
+            where: { id: id }
         }
     )
 

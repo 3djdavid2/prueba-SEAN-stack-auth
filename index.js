@@ -66,13 +66,18 @@ sequelize.sync().then(() => console.log('db is ready'));
 //force true elimina las celdas con informacion, no usar en production!!!!!
 // sequelize.sync({force:true}).then(() => console.log('db is ready'));
 
-//para que re.body no entregue Undefined como respuesta del post solicitado
-var bodyParser = require('body-parser');
 const User = require('./models/users.js');
 const Ordenes = require('./models/orden');
 const Carrito = require('./models/carrito.js');
-app.use(bodyParser.json())
-app.use(express.json());
+
+//para que re.body no entregue Undefined como respuesta del post solicitado
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json({limit: '250mb'}));
+app.use(bodyParser.urlencoded({limit: '250mb', extended: true}));
+
+app.use(express.json({limit: '250mb'}));
+
 app.use(cookieParser());
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(morgan('dev'));
@@ -148,6 +153,8 @@ app.use('/api/banner', require('./routes/banner'))
 io.on('connection', (socket) => {
 
     let { payload, tokenValido } = socket.handshake.query;
+
+    console.log('user connected', socket.id);
 
     socketMap.push(socket);
     socket.emit('test', { "id": socket.id })

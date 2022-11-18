@@ -134,9 +134,7 @@ exports.getProductsCount = async (req, res) => {
 
 //Obtener listado de algunos productos por pagina
 exports.getProductsByPage = async (req, res) => {
-
-
-
+    
     const products = await Product.findAndCountAll({
         where: {},
         limit: parseInt(req.query.pageSize),

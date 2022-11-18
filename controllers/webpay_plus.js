@@ -72,9 +72,12 @@ exports.commit = async (request, response) => {
   //3. Pago abortado (con botón anular compra en el formulario de Webpay): llegan TBK_TOKEN, TBK_ID_SESION, TBK_ORDEN_COMPRA
   //4. Caso atipico: llega todos token_ws, TBK_TOKEN, TBK_ID_SESION, TBK_ORDEN_COMPRA
 
+  var sktptelaunic = request.cookies.sktptelaunic
+
+  console.log("request.cookies", sktptelaunic)
 
   let params = request.method === 'GET' ? request.query : request.body;
-  let token = params.token_ws;
+  var token = params.token_ws;
   let tbkToken = params.TBK_TOKEN;
   let tbkOrdenCompra = params.TBK_ORDEN_COMPRA;
   let tbkIdSesion = params.TBK_ID_SESION;
@@ -86,7 +89,8 @@ exports.commit = async (request, response) => {
     tbkIdSesion
   };
 
-  if (token && !tbkToken) {//Flujo 1    
+
+  if (token && !tbkToken) {//Flujo 1     
 
     console.log("Fujo 1, se hará la transaccion COMMIT EN MIDDLWARE  WEBPAYPLUS")
 
@@ -97,25 +101,18 @@ exports.commit = async (request, response) => {
       commitResponse,
     };
 
-    console.log("la respuesta del commitResponse es: ", commitResponse)
+    
 
     if (commitResponse.response_code == 0) {
       console.log("AUTHORIZED ok 0, commitResponse.response_code == 0");
       try {
-        const user = await User.findAll({
-          raw: true,
-          where: { token_ws: token }
-        });
 
-        const socketId = user[0].socketId;
-
-        io.to(socketId).emit('pagar', JSON.stringify(viewData));
-        //io.emit('pagar', JSON.stringify(viewData));
+        io.to(sktptelaunic).emit('pagar', JSON.stringify(viewData));
+        //           io.emit('pagar', JSON.stringify(viewData));
 
       } catch (error) {
         console.log("fallo el emit del midlw")
       }
-
     }
 
 
@@ -125,15 +122,16 @@ exports.commit = async (request, response) => {
 
 
   } else if (!token && !tbkToken) {//Flujo 2
-    io.emit('anuladotiempoespera', JSON.stringify(viewData));
+    io.to(sktptelaunic).emit('anuladotiempoespera', JSON.stringify(viewData));
     // step = "El pago fue anulado por tiempo de espera.";
     // stepDescription = "En este paso luego de anulación por tiempo de espera (+10 minutos) no es necesario realizar la confirmación ";
   } else if (!token && tbkToken) {//Flujo 3
-    io.emit('anuladoporusuario', JSON.stringify(viewData));
+    
+    io.to(sktptelaunic).emit('anuladoporusuario', JSON.stringify(viewData));
     // step = "El pago fue anulado por el usuario.";
     // stepDescription = "En este paso luego de abandonar el formulario no es necesario realizar la confirmación ";
   } else if (token && tbkToken) {//Flujo 4
-    io.emit('pagoinvalido', JSON.stringify(viewData));
+    io.to(sktptelaunic).emit('pagoinvalido', JSON.stringify(viewData));
     // step = "El pago es inválido.";
     // stepDescription = "En este paso luego de abandonar el formulario no es necesario realizar la confirmación ";
   }
