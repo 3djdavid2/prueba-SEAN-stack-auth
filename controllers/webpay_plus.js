@@ -74,7 +74,7 @@ exports.commit = async (request, response) => {
 
   var sktptelaunic = request.cookies.sktptelaunic
 
-  console.log("request.cookies", sktptelaunic)
+  console.log("request.cookies. sktptelaunic:>", sktptelaunic)
 
   let params = request.method === 'GET' ? request.query : request.body;
   var token = params.token_ws;
