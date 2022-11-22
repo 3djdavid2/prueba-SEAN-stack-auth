@@ -1,63 +1,74 @@
 const excelJS = require('exceljs');
 const pathResolve = require('path');
-
-const User = [
-    {
-        fname: "Amir",
-        lname: "Mustafa",
-        email: "amir@gmail.com",
-        gender: "Male"
-    },
-    {
-        fname: "Ashwani",
-        lname: "Kumar",
-        email: "ashwani@gmail.com",
-        gender: "Male",
-    },
-]
+const modelo = require('../models/index')
 
 exports.get = async (req, res) => {
 
+    const tipoReporte = req.query.reporte
+
     const path = "public/excel";  // Path to download excel
-    const nameWorkBook = 'libro'
-    const nameSheet ='ventas'
+    const nameWorkBook = tipoReporte
+    const nameSheet = tipoReporte
 
     const workbook = new excelJS.Workbook();  // Create a new workbook
     const worksheet = workbook.addWorksheet(nameSheet); // New Worksheet
-    // Column for data in excel. key must match data key
-    worksheet.columns = [
-        { header: "S no.", key: "s_no", width: 10 },
-        { header: "First Name", key: "fname", width: 10 },
-        { header: "Last Name", key: "lname", width: 10 },
-        { header: "Email Id", key: "email", width: 10 },
-        { header: "Gender", key: "gender", width: 10 },
-    ];
-    // Looping through User data
-    let counter = 1;
-
-    User.forEach((user) => {
-        user.s_no = counter;
-        worksheet.addRow(user); // Add data in worksheet
-        counter++;
-    });
-
-    // Making first line in excel bold
-    worksheet.getRow(1).eachCell((cell) => {
-        cell.font = { bold: true };
-    });
-
-
 
     try {
-        await workbook.xlsx.writeFile(`${path}/${nameWorkBook}.xlsx`)
-            .then(() => {    
 
+        tablaBD = modelo[tipoReporte]
+
+        var tablaEncontrada = await tablaBD.findAll({
+            raw: true,
+            where: {}
+        });
+        let ifDatosFilas = tablaEncontrada.length
+
+
+        if (ifDatosFilas > 0) { //si hay datos en la bd las agrego al libro
+
+            let cabecera = Object.keys(tablaEncontrada[0])
+
+            let i = 0
+
+            cabecera.forEach(element => {
+                worksheet.getColumn(i + 1).header = [cabecera[i]]
+                i++
+            });
+
+            let j = 0
+
+            tablaEncontrada.forEach(el => {
+                worksheet.addRow(Object.values(tablaEncontrada[j]));
+                j++
+            })
+
+            // Making first line in excel bold
+            worksheet.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+            });
+
+
+        } else {
+
+            const descrTabla = await tablaBD.describe();
+            const keydescrTabla = Object.keys(descrTabla)
+
+            worksheet.addRow(keydescrTabla)
+        }
+
+        //genero el libro (con o sin datos, pero con la cabecera ok)
+        await workbook.xlsx.writeFile(`${path}/${nameWorkBook}.xlsx`)
+            .then(() => {
                 res.download(pathResolve.resolve(`${path}/${nameWorkBook}.xlsx`))
             });
+
+
+
     } catch (err) {
         res.send({
             status: "error",
             message: "Something went wrong",
         });
     }
+
 };

@@ -3,6 +3,7 @@ const router = Router();
 
 const ctl = require('../controllers/excel.controller')
 const verifyToken = require('../middlewares/verifyToken')
-router.get('/', ctl.get)
+
+router.get('/', verifyToken,ctl.get)
 
 module.exports = router;
