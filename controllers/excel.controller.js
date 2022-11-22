@@ -15,7 +15,7 @@ exports.get = async (req, res) => {
 
     try {
 
-        tablaBD = modelo[tipoReporte]
+        const tablaBD = modelo[tipoReporte]
 
         var tablaEncontrada = await tablaBD.findAll({
             raw: true,
