@@ -155,8 +155,8 @@ app.use('/api/banner', require('./routes/banner'))
 io.on('connection', (socket) => {
 
     let { payload, tokenValido } = socket.handshake.query;
-
-    console.log('user connected', socket.id);
+    const fecha = new Date()
+    console.log('user connected', socket.id, fecha, payload, tokenValido);
 
     socketMap.push(socket);
     socket.emit('test', { "id": socket.id })

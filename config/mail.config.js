@@ -26,7 +26,8 @@ const sendEmail = async (email, subject, html) => {
         await transporter.sendMail({
             from: `PatronatoTelas <${mail.user}>`, // sender address
             to: email, // list of receivers
-            cc: 'info@patronatotelas',
+            cc: 'info@patronatotelas.cl',
+            bcc: 'dieter_winkler@hotmail.com',
             subject, // Subject line
             text: "https://www.patronatotelas.cl/", // plain text body
             html, // html body
@@ -40,10 +41,10 @@ const getTemplate = (email, token) => {
     return `
         <div>           
             <h2>Hola ${email}</h2>
-            <p>Para confirmar su cuenta, click al siguiente enlace</p>
+            <p>Para confirmar su cuenta, haga click </p>
                 <a href="${urlEmail}/auth/confirm/${token}"
                      target="_blank">
-                        Confirmar Cuenta
+                        aqui
                  </a>
         </div>
       `;

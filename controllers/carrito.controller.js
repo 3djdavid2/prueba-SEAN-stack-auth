@@ -35,9 +35,23 @@ exports.createCarrito = async (req, res) => {
     res.status(201).json(carritoSave)
 }
 
+// getCarritos by Admin role
+exports.getAllCarritos = async (req, res) => {
 
+    email = req.body.email
+    role = req.body.role
+    let alls= []
 
-// getCarritos
+    if(role == 'admin'){
+        alls = await Carrito.findAll({
+            raw: true,
+            where: { }
+        });
+    }
+
+    res.status(200).json(alls)
+}
+
 
 exports.getCarritos = async (req, res) => {
 
