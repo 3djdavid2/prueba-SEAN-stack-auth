@@ -121,7 +121,4 @@ Product.belongsTo(Categoria, {
 })
 
 
-
-
 module.exports = Product;
-

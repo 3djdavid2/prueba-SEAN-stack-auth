@@ -1,8 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database.js')
 
-const EstadoPedido = require('../models/estadoPedido')
-
 const TipoEntrega = require('../models/tipoEntrega')
 const Tiendas = require('../models/tiendas')
 
@@ -115,7 +113,6 @@ Ordenes.belongsTo(QuienRetiraTienda, {
     targetId: 'id'
 });
 
-//
 
 //
 TipoDatosFA.hasOne(Ordenes, {
@@ -127,7 +124,6 @@ Ordenes.belongsTo(TipoDatosFA, {
     targetId: 'id'
 });
 
-//
 
 //
 TipoDocTribut.hasOne(Ordenes, {
@@ -138,12 +134,6 @@ Ordenes.belongsTo(TipoDocTribut, {
     foreignKey: 'tipoDocId',   
     targetId: 'id'
 });
-
-//
-
-
-
-
 
 //
 TipoEntrega.hasOne(Ordenes, {
