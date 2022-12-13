@@ -36,7 +36,12 @@ exports.confirm = async (req, res) => {
 
 
         // Redireccionar a la confirmación
-        res.redirect('/api/confirm.html')
+        if(process.env.ENV != 'production'){
+
+            res.redirect('/confirm.html')
+        }else{
+            res.redirect('/api/confirm.html')
+        }
 
         return
 

@@ -34,6 +34,7 @@ const fs = require('fs')
 
 const port = process.env.PORT
 
+
 //sequelize ORM
 const sequelize = require('./database.js');
 
@@ -73,10 +74,10 @@ const Carrito = require('./models/carrito.js');
 //para que re.body no entregue Undefined como respuesta del post solicitado
 var bodyParser = require('body-parser');
 
-app.use(bodyParser.json({limit: '250mb'}));
-app.use(bodyParser.urlencoded({limit: '250mb', extended: true}));
+app.use(bodyParser.json({ limit: '250mb' }));
+app.use(bodyParser.urlencoded({ limit: '250mb', extended: true }));
 
-app.use(express.json({limit: '250mb'}));
+app.use(express.json({ limit: '250mb' }));
 
 app.use(cookieParser());
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
@@ -118,37 +119,38 @@ Pack
 PackMix
 Banner
 
+const PREFIX = process.env.NODE_ENV === 'production' ? '' : '/api';
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+
 app.use('/uploads', express.static(path.resolve('uploads')));
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/", require('./routes/index'));
-app.use('/api/webpay_plus', require('./routes/webpay_plus'));
+app.use(PREFIX + '/webpay_plus', require('./routes/webpay_plus'));
 
 //todas las rutas empiezan con auth o product
-app.use('/api/excel', require('./routes/excel'))
-
-app.use('/api/users', require('./routes/users'))
-app.use('/api/auth', require('./routes/auth'))
-app.use('/api/carrito', require('./routes/carrito'))
-app.use('/api/compras', require('./routes/compras'))
-app.use('/api/send-email', require('./routes/contactoForm'))
-app.use('/api/perfil', require('./routes/perfil'))
-app.use('/api/direcciones', require('./routes/direccionesClientes'))
-app.use('/api/product', require('./routes/product'))
-app.use('/api/productCodigo', require('./routes/productCodigo'))
-app.use('/api/productcrud', require('./routes/productcrud'))
-app.use('/api/orders', require('./routes/orders'))
-app.use('/api/marcas', require('./routes/marcas'))
-app.use('/api/categorias', require('./routes/categorias'))
-app.use('/api/pack', require('./routes/pack'))
-app.use('/api/sucursales', require('./routes/sucursales'))
-app.use('/api/transferencia', require('./routes/transferencia'))
-app.use('/api/cotizarDomicilio', require('./routes/cotizarDomicilio'))
-app.use('/api/banner', require('./routes/banner'))
+app.use(PREFIX + '/excel', require('./routes/excel'))
+app.use(PREFIX + '/users', require('./routes/users'))
+app.use(PREFIX + '/auth', require('./routes/auth'))
+app.use(PREFIX + '/carrito', require('./routes/carrito'))
+app.use(PREFIX + '/compras', require('./routes/compras'))
+app.use(PREFIX + '/send-email', require('./routes/contactoForm'))
+app.use(PREFIX + '/perfil', require('./routes/perfil'))
+app.use(PREFIX + '/direcciones', require('./routes/direccionesClientes'))
+app.use(PREFIX + '/product', require('./routes/product'))
+app.use(PREFIX + '/productCodigo', require('./routes/productCodigo'))
+app.use(PREFIX + '/productcrud', require('./routes/productcrud'))
+app.use(PREFIX + '/orders', require('./routes/orders'))
+app.use(PREFIX + '/marcas', require('./routes/marcas'))
+app.use(PREFIX + '/categorias', require('./routes/categorias'))
+app.use(PREFIX + '/pack', require('./routes/pack'))
+app.use(PREFIX + '/sucursales', require('./routes/sucursales'))
+app.use(PREFIX + '/transferencia', require('./routes/transferencia'))
+app.use(PREFIX + '/cotizarDomicilio', require('./routes/cotizarDomicilio'))
+app.use(PREFIX + '/banner', require('./routes/banner'))
 
 //CONECTION SOCKET INICIO ***********************************************************************
 
@@ -257,7 +259,7 @@ var socketMap = [];
 //todo revisar permiso solo de asdmmin
 //ENDPOINT admin angular post service perfil
 
-app.put('/api/precio', async (req, res) => {
+app.put(PREFIX+'/precio', async (req, res) => {
 
 
 
@@ -277,7 +279,7 @@ async function precioUpdate(newPrecio) {
     }
 };
 
-app.put('/api/estado', async (req, res) => {
+app.put(PREFIX+'/estado', async (req, res) => {
 
     const { orden, newEstado, email } = req.body
     //actualizar ordens por numero de orden
@@ -292,8 +294,8 @@ app.put('/api/estado', async (req, res) => {
 
     //actualizar carrito por orden su estado para que lo vea el cliente
     const carrito = await Carrito.update(
-        {estado: newEstado},
-        {where:{ordenPedido: orden}}
+        { estado: newEstado },
+        { where: { ordenPedido: orden } }
     )
 
     console.log("carrito update estado orden:>", carrito[0])

@@ -10,4 +10,3 @@ const sequelize = new Sequelize('test-db', 'email', 'pass', {
 });
 
 module.exports = sequelize;
-
